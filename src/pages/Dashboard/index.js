@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 // import { useAuthenticated } from "../../hooks/useAuthenticated";
 import {
   UserOutlined,
-  LogoutOutlined,
   SettingOutlined,
   PlusCircleOutlined,
   AppstoreOutlined,
@@ -20,6 +19,7 @@ import Profile from "./content/Profile";
 import AddPost from "./content/addPost";
 import ListingPost from "./content/listingPost";
 import University from "./content/university";
+import { NotificationContainer } from 'react-notifications';
 
 export default function Dashboard() {
   // useAuthenticated();
@@ -65,14 +65,7 @@ export default function Dashboard() {
       href: "/dashboard/university",
       exact: false,
       Component: University,
-    },
-    {
-      title: "Đăng xuất",
-      icon: <LogoutOutlined />,
-      href: "/dashboard/Logout",
-      exact: false,
-      Component: ContentDashboard,
-    },
+    }
   ];
   return (
     <div className="dashboard">
@@ -82,6 +75,7 @@ export default function Dashboard() {
       <NavDashboard />
       <SidebarDashBoard ROUTES={ROUTES} />
       <DashboardLayout ROUTES={ROUTES} />
+      <NotificationContainer />
     </div>
   );
 }

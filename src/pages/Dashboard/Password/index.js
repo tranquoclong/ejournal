@@ -59,7 +59,6 @@ function PassWord() {
       new_password,
       confirm_new_password
     }))
-
     if (!res.ok) {
       notification.error({
         message: 'Oops!',
@@ -71,9 +70,7 @@ function PassWord() {
         description: 'Đổi mật khẩu thành công'
       })
     }
-
     setIsLoading(false);
-    
   };
 
   const validateConfirmNewPassword = (params) => {

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useIsLogin } from "../../hooks/useIsLogin";
 import { actLogout } from "../../store/auth/actions";
 import { FlagFR, FlagUK, FlagVN, FlagZH } from "../../common/AppIcon";
@@ -7,7 +7,11 @@ import MainMenus from "./MainMenus";
 import { actSetLang } from "../../store/app/actions";
 import { locales } from "../../i18n";
 import { Trans } from "@lingui/macro";
-
+import {
+  UserOutlined,
+  LogoutOutlined,
+  AppstoreAddOutlined,
+} from "@ant-design/icons";
 const mapFlagByLang = {
   vi: <FlagVN />,
   en: <FlagUK />,
@@ -17,12 +21,13 @@ const mapFlagByLang = {
 
 export default function HeaderMenu() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const lang = useSelector((state) => state.App.lang);
   const { isLogin, currentUser } = useIsLogin();
 
   function handleLogout(evt) {
     evt.preventDefault();
-    dispatch(actLogout());
+    dispatch(actLogout({ history }));
   }
 
   function handleChangeLang(evt, locale) {
@@ -39,22 +44,22 @@ export default function HeaderMenu() {
           {isLogin ? (
             <>
               <Link to="/dashboard">
-                <i className="icons ion-person" /> {currentUser.username}
+                <UserOutlined /> {currentUser.username}
               </Link>
               <ul>
-                <li>
+                <li style={{ marginTop: "15px" }}>
                   <Link to="/dashboard">
-                    Quản lý
+                    <AppstoreAddOutlined /> Quản lý
                   </Link>
                   <Link to="#" onClick={handleLogout}>
-                    Đăng xuất
+                    <LogoutOutlined /> Đăng xuất
                   </Link>
                 </li>
               </ul>
             </>
           ) : (
             <Link to="/login">
-              <i className="icons ion-person" /> <Trans>Tài khoản</Trans>
+              <UserOutlined /> <Trans>Tài khoản</Trans>
             </Link>
           )}
         </li>

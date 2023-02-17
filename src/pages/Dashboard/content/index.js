@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   GlobalOutlined,
   LineChartOutlined,
@@ -10,17 +10,18 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { actGetAllAsync } from "../../../store/user/actions";
+import PaginationRe from "../../../common/Paging";
 function ContentDashboard() {
   const dispatch = useDispatch();
   const allUser = useSelector((state) => state.User.allUser);
-
-    useEffect(
-      () => {
-        dispatch(actGetAllAsync());
-      },
-      // eslint-disable-next-line
-      []
-    );
+  const [page, setPage] = useState(0);
+  useEffect(
+    () => {
+      dispatch(actGetAllAsync());
+    },
+    // eslint-disable-next-line
+    []
+  );
   return (
     <div className="dashboard-content">
       <div className="row">
@@ -202,35 +203,44 @@ function ContentDashboard() {
           <div className="dashboard-list-box margin-top-20 user-list">
             <h4 className="gray">Danh sách người dùng</h4>
             <ul>
-              {allUser &&
-                allUser.slice(0,5).map((user, index) => (
-                  <li key={index}>
-                    <div className="user-list-item">
-                      <div className="user-list-image">
-                        <img
-                          src={
-                            user.avatar === null
-                              ? `https://source.unsplash.com/random/?book,post,${user.id}`
-                              : user.avatar
-                          }
-                          alt=""
-                        />
+              {allUser && (
+                <>
+                  {allUser.slice(page, page + 5).map((user, index) => (
+                    <li key={index}>
+                      <div className="user-list-item">
+                        <div className="user-list-image">
+                          <img
+                            src={
+                              user.avatar === null
+                                ? `https://source.unsplash.com/random/?book,post,${user.id}`
+                                : user.avatar
+                            }
+                            alt=""
+                          />
+                        </div>
+                        <div className="user-list-content">
+                          <h4>{user.fullname}</h4>
+                          <span>{user.status}</span>
+                        </div>
+                        <div className="user-btns">
+                          <Link to="#" className="button">
+                            View
+                          </Link>
+                          <Link to="#" className="button">
+                            Edit
+                          </Link>
+                        </div>
                       </div>
-                      <div className="user-list-content">
-                        <h4>{user.fullname}</h4>
-                        <span>{user.status}</span>
-                      </div>
-                      <div className="user-btns">
-                        <Link to="#" className="button">
-                          View
-                        </Link>
-                        <Link to="#" className="button">
-                          Edit
-                        </Link>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  ))}
+                  <PaginationRe
+                    page={page}
+                    setPage={setPage}
+                    count={5}
+                    totalPages={allUser.length}
+                  />
+                </>
+              )}
             </ul>
           </div>
         </div>

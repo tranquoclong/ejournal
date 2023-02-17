@@ -3572,9 +3572,9 @@ a.canvasjs-chart-credit {
   width: 100%;
 }
 
-.dashboard-list-box.with-icons ul li {
+/* .dashboard-list-box.with-icons ul li {
   padding-left: 87px;
-}
+} */
 
 .dashboard-list-box ul li:last-child {
   border: none;

@@ -1,5 +1,5 @@
 import { AuthService } from "../../services/auth";
-import { actGetMeAsync, ACT_GET_ME } from "../user/actions";
+import { actGetMeAsync } from "../user/actions";
 
 export const ACT_LOGIN = "ACT_LOGIN";
 export const ACT_SET_TOKEN = "ACT_SET_TOKEN";
@@ -28,17 +28,12 @@ export function actSetToken(token) {
   };
 }
 
-export function actLogout() {
+export function actLogout({ history }) {
   return async (dispatch) => {
     try {
-      const response = await AuthService.logout();
-      console.log("🚀 ~ file: actions.js:35 ~ return ~ response", response)
-      localStorage.removeItem("access_login");
-      dispatch({
-        type: ACT_GET_ME,
-        payload: null,
-      });
-      // dispatch(actLogoutAsync());
+      history.push("/");
+      await AuthService.logout();
+      dispatch(actLogoutAsync());
       return {
         ok: true,
       };
@@ -59,13 +54,8 @@ export function actLoginAsync({ username, password }) {
         password,
       });
       const data = response.data;
-      console.log("🚀 ~ file: actions.js:62 ~ return ~ data", data)
       const id = data.id;
-      // const token = data.token;
-      // localStorage.setItem("access_token", token);
-      // dispatch(actSetToken(token));
       dispatch(actGetMeAsync({ id }));
-
       return {
         ok: true,
       };
@@ -80,22 +70,14 @@ export function actLoginAsync({ username, password }) {
 export function actRegisterAsync({ email, phone, usernameRe, name, passwordRe }) {
  return async (dispatch) => {
     try {
-      const response = await AuthService.register({
+        await AuthService.register({
         email,
         phone,
         usernameRe,
         name,
         passwordRe,
       });
-      const data = response.data;
-      console.log("🚀 ~ file: actions.js:86 ~ return ~ data", data)
-      // const token = data.token;
-
-      // localStorage.setItem("access_token", token);
-
-      // dispatch(actSetToken(token));
       // dispatch(actGetMeAsync());
-
       return {
         ok: true,
       };

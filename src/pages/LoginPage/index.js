@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { notification } from "antd";
 import { actLoginAsync, actRegisterAsync } from "../../store/auth/actions";
 import { Trans } from "@lingui/macro";
 // import { t } from "@lingui/macro";

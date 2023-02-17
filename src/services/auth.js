@@ -1,14 +1,14 @@
 import { api } from ".";
 
 export const AuthService = {
-  logout: () => api.call().post(`/logout`, {}, { withCredentials: true }),
+  logout: () => api.call().post(`/logout`,),
   login: ({ username, password }) =>
     api.call().post(
       `/login`,
       {
         username,
         password,
-      }
+      },
     ),
   register: ({ email, phone, usernameRe, name, passwordRe }) =>
     api.call().post(`/login/register`, {

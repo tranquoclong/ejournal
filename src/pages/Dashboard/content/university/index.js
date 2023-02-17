@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actGetAllMajor, actGetAllUniversity } from "../../../../store/user/actions";
+import PaginationRe from "../../../../common/Paging";
+import Major from "./major";
+import { Link } from 'react-router-dom';
+import AddMajor from "./addMajor";
+import AddUniversity from "./addUniversity";
 function University() {
     const dispatch = useDispatch();
     const allUniversity = useSelector((state) => state.User.allUniversity);
     const allMajor = useSelector((state) => state.User.allMajor);
-
+    const [page, setPage] = useState(0);
     useEffect(
     () => {
         dispatch(actGetAllUniversity());
@@ -17,61 +21,51 @@ function University() {
     );
   return (
     <div className="dashboard-content">
+      <div className="dashboard-form" style={{ marginBottom: "30px" }}>
+        <div className="row">
+          <AddUniversity allUniversity={allUniversity} />
+          <AddMajor allMajor={allMajor} />
+        </div>
+      </div>
       <div className="row">
-        <div className="col-lg-7 col-md-12 col-xs-12 traffic">
+        <div className="col-lg-6 col-md-12 col-xs-12 traffic">
           <div className="dashboard-list-box with-icons margin-top-20">
-            <h4 className="gray">Các hoạt động gần đây</h4>
+            <h4 className="gray">Danh sách các trường học</h4>
             <ul>
-              {allUniversity &&
-                allUniversity.slice(0, 5).map((university, index) => (
-                  <li key={index}>
-                    <div className="user-list-item">
-                      <div className="user-list-content">
-                        <h4>{university.name}</h4>
-                        <span>{university.status}</span>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+              {allUniversity && (
+                <>
+                  {allUniversity
+                    .slice(page, page + 5)
+                    .map((university, index) => (
+                      <li key={index}>
+                        <div className="user-list-item">
+                          <div className="user-list-content">
+                            <h4>{university.name}</h4>
+                            <span>{university.email}</span>
+                          </div>
+                          <div className="user-btns">
+                            <Link to="#" className="button">
+                              View
+                            </Link>
+                            <Link to="#" className="button">
+                              Edit
+                            </Link>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  <PaginationRe
+                    page={page}
+                    setPage={setPage}
+                    count={5}
+                    totalPages={allUniversity.length}
+                  />
+                </>
+              )}
             </ul>
           </div>
         </div>
-        <div className="col-lg-5 col-md-12 col-xs-12 traffic">
-          <div className="dashboard-list-box margin-top-20 user-list">
-            <h4 className="gray">Danh sách người dùng</h4>
-            <ul>
-              {allMajor &&
-                allMajor.slice(0, 5).map((major, index) => (
-                  <li key={index}>
-                    <div className="user-list-item">
-                      {/* <div className="user-list-image">
-                        <img
-                          src={
-                            user.avatar === null
-                              ? `https://source.unsplash.com/random/?book,post,${user.id}`
-                              : user.avatar
-                          }
-                          alt=""
-                        />
-                      </div> */}
-                      <div className="user-list-content">
-                        <h4>{major.name}</h4>
-                        <span>{major.status}</span>
-                      </div>
-                      <div className="user-btns">
-                        <Link to="#" className="button">
-                          View
-                        </Link>
-                        <Link to="#" className="button">
-                          Edit
-                        </Link>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        </div>
+        <Major allMajor={allMajor} />
       </div>
     </div>
   );

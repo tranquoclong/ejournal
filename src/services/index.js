@@ -9,19 +9,16 @@ export const api = {
       headers: {
         "Content-Type": "application/json",
       },
+      withCredentials: true,
     });
   },
   callWithAuth: () => {
     return axios.create({
       baseURL,
-      // headers: {
-      //   Authorization: `Bearer ` + localStorage.getItem("access_token"),
-      // },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
     });
   },
 };
-
-  //  headers: {
-  //       Cookie:
-  //         "connect.sid=s%3A9p8zP8fM2QzBHBCdHNVLgF-GBRfwBPk-.sk%2FDmx7CXs9dZVFT8QYwlyexHuYcd0ssFJ1to18zXs0",
-  //     }

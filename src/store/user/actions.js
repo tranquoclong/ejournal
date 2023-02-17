@@ -1,12 +1,12 @@
 import { UserService } from "../../services/user";
-import { actSetToken } from "../auth/actions";
+// import { actSetToken } from "../auth/actions";
 
 export const ACT_GET_ME = "ACT_GET_ME";
 export const ACT_ALL_USER = "ACT_ALL_USER";
 export const ACT_ALL_UNIVERSITY = "ACT_ALL_UNIVERSITY";
 export const ACT_ALL_MAJOR = "ACT_ALL_MAJOR";
 export const ACT_CHANGE_PASSWORD = "ACT_CHANGE_PASSWORD";
- 
+
 export function actGetMe(currentUser) {
   return {
     type: ACT_GET_ME,
@@ -62,12 +62,32 @@ export function actGetMeAsync({ id }) {
   return async (dispatch) => {
     try {
       const response = await UserService.getMeInfo({ id });
-      console.log("🚀 ~ file: actions.js:65 ~ return ~ response", response)
       localStorage.setItem("access_login", JSON.stringify(response.data[0]));
       dispatch(actGetMe(response.data[0]));
     } catch (e) {
       // dispatch(actSetToken(""));
       localStorage.removeItem("access_login", "");
+    }
+  };
+}
+
+export function actPutUniversityAsync({ name, email, mailtype }, allUniversity) {
+  return async (dispatch) => {
+    try {
+      const response = await UserService.putUniversity({
+        name,
+        email,
+        mailtype,
+      });
+      console.log("🚀 ~ file: actions.js:81 ~ return ~ response", response);
+      // dispatch(actAllUniversity([...[response],...allUniversity]));
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
     }
   };
 }
@@ -105,17 +125,31 @@ export function actGetAllMajor() {
   };
 }
 
-export function actChangePasswordAsync({
-  password,
-  new_password,
-  confirm_new_password,
-}) {
+export function actPutMajorAsync({ name }, allMajor) {
+  return async (dispatch) => {
+    try {
+      const response = await UserService.putMajor({
+        name,
+      });
+      console.log("🚀 ~ file: actions.js:81 ~ return ~ response", response);
+      // dispatch(actAllMajor([...[response],...allMajor]));
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actChangePasswordAsync({ oldPassword, newPassword }) {
   return async (dispatch) => {
     try {
       const response = await UserService.changePassword({
-        password,
-        new_password,
-        confirm_new_password,
+        oldPassword,
+        newPassword,
       });
       console.log("response", response);
       return {

@@ -3,6 +3,7 @@ import {
   FacebookFilled,
   TwitterOutlined,
 } from "@ant-design/icons";
+import ChangePassWord from "./changePassWord";
 function Profile() {
   return (
     <div className="dashboard-content">
@@ -57,29 +58,7 @@ function Profile() {
               </div>
             </div>
           </div>
-          {/* Change Password */}
-          <div className="col-lg-6 col-md-6 col-xs-12 padding-left-30">
-            <div className="dashboard-list-box margin-top-0">
-              <h4 className="gray">Địa chỉ của bạn</h4>
-              <div className="dashboard-list-box-static">
-                {/* Change Password */}
-                <div className="my-profile">
-                  <label className="margin-top-0">Tên công ty</label>
-                  <input type="text" />
-                  <label>Địa chỉ *</label>
-                  <input type="text" />
-                  <label>Mã Bưu Chính *</label>
-                  <input type="text" />
-                  <label>Quốc gia *</label>
-                  <input type="text" />
-                  <label>Thành phố *</label>
-                  <input type="text" />
-                  <label>Khu vực/tiểu bang *</label>
-                  <input type="text" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <ChangePassWord/>
         </div>
       </div>
     </div>

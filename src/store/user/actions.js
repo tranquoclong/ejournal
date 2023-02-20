@@ -79,8 +79,7 @@ export function actPutUniversityAsync({ name, email, mailtype }, allUniversity) 
         email,
         mailtype,
       });
-      console.log("🚀 ~ file: actions.js:81 ~ return ~ response", response);
-      // dispatch(actAllUniversity([...[response],...allUniversity]));
+      dispatch(actAllUniversity([...response.data, ...allUniversity]));
       return {
         ok: true,
       };
@@ -131,8 +130,7 @@ export function actPutMajorAsync({ name }, allMajor) {
       const response = await UserService.putMajor({
         name,
       });
-      console.log("🚀 ~ file: actions.js:81 ~ return ~ response", response);
-      // dispatch(actAllMajor([...[response],...allMajor]));
+      dispatch(actAllMajor([...response.data, ...allMajor]));
       return {
         ok: true,
       };

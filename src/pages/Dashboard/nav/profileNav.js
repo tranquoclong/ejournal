@@ -4,7 +4,7 @@ import { useIsLogin } from "../../../hooks/useIsLogin";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 
 function ProfileNav() {
-    const { currentUser } = useIsLogin();
+  const { currentUser } = useIsLogin();
   const dropdownRef = useRef(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
   const onClick = () => setIsActive(!isActive);
@@ -18,7 +18,11 @@ function ProfileNav() {
         <div className="profile-sec">
           <div className="dash-image">
             <img
-              src="https://avatars.githubusercontent.com/u/98083474?v=4"
+              src={
+                currentUser.avatar === null
+                  ? `https://source.unsplash.com/random/?book,post,${currentUser.id}`
+                  : currentUser.avatar
+              }
               alt=""
             />
           </div>

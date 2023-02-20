@@ -3,8 +3,47 @@ import {
   FacebookFilled,
   TwitterOutlined,
 } from "@ant-design/icons";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useIsLogin } from "../../../../hooks/useIsLogin";
 import ChangePassWord from "./changePassWord";
+import { actChangePasswordAsync } from "../../../../store/user/actions";
+import { NotificationManager } from "react-notifications";
 function Profile() {
+    const dispatch = useDispatch();
+    const { currentUser } = useIsLogin();
+    const [isLoading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState({
+      fullname: currentUser.fullname,
+      email: currentUser.email,
+      phone: currentUser.phone,
+    });
+    function onFinish(evt) {
+      evt.preventDefault();
+      if (isLoading) {
+        return;
+      }
+      setIsLoading(true);
+      dispatch(actChangePasswordAsync(formData)).then((res) => {
+        if (res.ok) {
+          NotificationManager.success("đổi mật khẩu thành công");
+          setFormData({ oldPassword: "", newPassword: "", passwordReg: "" });
+        } else {
+          NotificationManager.error("đổi mật khẩu thất bại");
+        }
+        setIsLoading(false);
+      });
+    }
+
+    function handleChange(key) {
+      return (evt) => {
+        setFormData({
+          ...formData,
+          [key]: evt.target.value,
+        });
+      };
+    }
+
   return (
     <div className="dashboard-content">
       <div className="dashboard-form">
@@ -12,10 +51,14 @@ function Profile() {
           <div className="col-lg-6 col-md-6 col-xs-12 padding-right-30">
             <div className="dashboard-list-box">
               <h4 className="gray">Chi tiết hồ sơ</h4>
-              <div className="dashboard-list-box-static">
+              <form onSubmit={onFinish} className="dashboard-list-box-static">
                 <div className="edit-profile-photo">
                   <img
-                    src="https://avatars.githubusercontent.com/u/98083474?v=4"
+                    src={
+                      currentUser.avatar === null
+                        ? `https://source.unsplash.com/random/?book,post,${currentUser.id}`
+                        : currentUser.avatar
+                    }
                     alt=""
                   />
                   <div className="change-photo-btn">
@@ -30,11 +73,26 @@ function Profile() {
                 {/* Details */}
                 <div className="my-profile">
                   <label>Tên của bạn *</label>
-                  <input defaultValue="Tom Perrin" type="text" />
+                  <input
+                    type="text"
+                    placeholder="Điền tên đầy đủ"
+                    value={formData.fullname}
+                    onChange={handleChange("fullname")}
+                  />
                   <label>Số điện thoại *</label>
-                  <input defaultValue="(123) 123-456" type="text" />
+                  <input
+                    type="text"
+                    placeholder="Điền số  điện thoại"
+                    value={formData.phone}
+                    onChange={handleChange("phone")}
+                  />
                   <label>Địa chỉ Email *</label>
-                  <input defaultValue="tom@example.com" type="text" />
+                  <input
+                    type="email"
+                    placeholder="Điền địa chỉ email"
+                    value={formData.email}
+                    onChange={handleChange("email")}
+                  />
                   <label>Tiểu sử *</label>
                   <textarea
                     name="notes"
@@ -55,10 +113,10 @@ function Profile() {
                   <input placeholder="https://www.facebook.com/" type="text" />
                 </div>
                 <button className="button">Lưu thay đổi</button>
-              </div>
+              </form>
             </div>
           </div>
-          <ChangePassWord/>
+          <ChangePassWord />
         </div>
       </div>
     </div>

@@ -1,30 +1,42 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { actPutUniversityAsync } from "../../../../store/user/actions";
+import { actPutUniversityAsync, actUpdateUniversityAsync } from "../../../../store/user/actions";
 import { NotificationManager } from "react-notifications";
-function AddUniversity({ allUniversity }) {
+function AddUniversity({ formUniversity, setFormUniversity, allUniversity }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mailtype: "",
-  });
   function onFinish(evt) {
     evt.preventDefault();
-    if (!formData.name || !formData.email) {
+    if (!formUniversity.name || !formUniversity.email) {
       return;
     }
     if (isLoading) {
       return;
     }
     setIsLoading(true);
-    dispatch(actPutUniversityAsync(formData, allUniversity)).then((res) => {
+    dispatch(
+      formUniversity.status !== "UPDATE"
+        ? actPutUniversityAsync(formUniversity, allUniversity)
+        : actUpdateUniversityAsync(formUniversity, allUniversity)
+    ).then((res) => {
       if (res.ok) {
-        NotificationManager.success("thêm trường thành công");
-        setFormData({ name: "", email: "", mailtype: "" });
+        NotificationManager.success(
+          `${formUniversity.status} trường thành công`
+        );
+        setFormUniversity({
+          name: "",
+          email: "",
+          mailtype: "",
+          status: "ADD",
+        });
       } else {
-        NotificationManager.error("thêm trường thất bại");
+        NotificationManager.error(`${formUniversity.status} trường thất bại`);
+        setFormUniversity({
+          name: "",
+          email: "",
+          mailtype: "",
+          status: "ADD",
+        });
       }
       setIsLoading(false);
     });
@@ -32,8 +44,8 @@ function AddUniversity({ allUniversity }) {
 
   function handleChange(key) {
     return (evt) => {
-      setFormData({
-        ...formData,
+      setFormUniversity({
+        ...formUniversity,
         [key]: evt.target.value,
       });
     };
@@ -49,25 +61,27 @@ function AddUniversity({ allUniversity }) {
             <input
               type="text"
               placeholder="Điền tên trường"
-              value={formData.name}
+              value={formUniversity.name}
               onChange={handleChange("name")}
             />
             <label>Email trường *</label>
             <input
               type="email"
               placeholder="Điền email trường"
-              value={formData.email}
+              value={formUniversity.email}
               onChange={handleChange("email")}
             />
             <label>Kiểu Email *</label>
             <input
               type="text"
               placeholder="Điền kiểu email"
-              value={formData.mailtype}
+              value={formUniversity.mailtype}
               onChange={handleChange("mailtype")}
             />
           </div>
-          <button className="button">Lưu thay đổi</button>
+          <button className="button">
+            Lưu thay đổi {formUniversity.status !== "UPDATE" ? "":"(update)"}
+          </button>
         </form>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { actFetchCommentsAsync } from "../comments/actions";
 export const ACT_FETCH_LATEST_POSTS = "ACT_FETCH_LATEST_POSTS";
 export const ACT_FETCH_POPULAR_POSTS = "ACT_FETCH_POPULAR_POSTS";
 export const ACT_FETCH_POSTS = "ACT_FETCH_POSTS";
+export const ACT_FETCH_MANUS = "ACT_FETCH_MANUS";
 export const ACT_FETCH_POSTS_SEARCH = "ACT_FETCh_POSTS_SEARCH";
 export const ACT_FETCH_POST_DETAIL = "ACT_FETCH_POST_DETAIL";
 export const ACT_FETCH_RELATED_AUTHOR_POST = "ACT_FETCH_RELATED_AUTHOR_POST";
@@ -39,20 +40,18 @@ export function actFetchPopularPosts({ posts = [] } = {}) {
     },
   };
 }
-export function actFetchPosts({
-  posts = [],
-  page = 1,
-  per_page = 3,
-  totalPages = 1,
-} = {}) {
+export function actFetchPosts(posts) {
   return {
     type: ACT_FETCH_POSTS,
     payload: {
-      posts,
-      page,
-      per_page,
-      totalPages,
+      posts
     },
+  };
+}
+export function actFetchManus(manuscript) {
+  return {
+    type: ACT_FETCH_MANUS,
+    payload: manuscript,
   };
 }
 export function actFetchPostsSearch({
@@ -120,26 +119,24 @@ export const actFetchPopularPostsAsync = () => {
     } catch (e) {}
   };
 };
-export const actFetchPostsAsync = ({ page = 1, per_page = 2 } = {}) => {
+export const actFetchPostsAsync = () => {
   return async (dispatch) => {
     try {
-      const response = await PostService.getListPosts({
-        page,
-        per_page,
-      });
-      const headers = response.headers;
-      // const totalElement = headers['x-wp-total'];
-      const totalPages = Number(headers["x-wp-totalpages"]);
+      const response = await PostService.getListPosts();
       const posts = response.data;
-
       dispatch(
         actFetchPosts({
           posts,
-          page,
-          per_page,
-          totalPages,
         })
       );
+    } catch (e) {}
+  };
+};
+export const actFetchManusAsync = () => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getListManus();
+      dispatch(actFetchManus(response.data.list));
     } catch (e) {}
   };
 };

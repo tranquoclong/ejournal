@@ -1,10 +1,10 @@
-import ArticleItemSekelton from "../ArticleItem/ArticleItemSekelton";
 import { useSelector } from "react-redux";
 import ArticleItemHed from "../ArticleItem/ArticleItemHed";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Skeleton } from "antd";
 import { posts } from "../../data";
 export default function ArticlesLatest() {
   // const posts = useSelector((state) => state.Post.articlesLatest);
@@ -43,14 +43,23 @@ export default function ArticlesLatest() {
     autoplay: true,
     autoplaySpeed: 2500,
   };
+  
   return (
     <Slider {...settings}>
       {loadingLatestStatus === "loading" &&
         [1, 2, 3].map((index) => {
           return (
-            <div className="latest-news__card" key={index}>
-              <ArticleItemSekelton />
-            </div>
+            <section id="mt_banner" key={index}>
+              <div className="swiper-container">
+                <div
+                  className="slide-inner"
+                  style={{ backgroundImage: "url(/images/bgd.png)" }}
+                />
+                <div className="banner_caption_text">
+                  <Skeleton title paragraph={{ rows: 2 }} active />
+                </div>
+              </div>
+            </section>
           );
         })}
       {posts.map((post) => {

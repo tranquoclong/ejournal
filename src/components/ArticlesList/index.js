@@ -6,15 +6,15 @@ import MainTitle from "../../common/MainTitle";
 import { posts } from "../../data";
 
 export default function ArticlesList() {
-  const {
-    loading,
-    // items: posts,
-    handleLoadMore,
-    hasMoreItems,
-  } = usePaging({
-    funcSelector: (state) => state.Post.articlesPaging,
-    actionAsync: actFetchPostsAsync,
-  });
+  // const {
+  //   loading,
+  //   // items: posts,
+  //   handleLoadMore,
+  //   hasMoreItems,
+  // } = usePaging({
+  //   funcSelector: (state) => state.Post.articlesPaging,
+  //   actionAsync: actFetchPostsAsync,
+  // });
   return (
     <>
       <MainTitle>Danh sách bài viết</MainTitle>
@@ -25,7 +25,7 @@ export default function ArticlesList() {
           </div>
         );
       })}
-      {hasMoreItems && (
+      {/* {hasMoreItems && (
         <>
           <div className="col-xs-12">
             <div className="blog-button text-center">
@@ -41,7 +41,7 @@ export default function ArticlesList() {
             </div>
           </div>
         </>
-      )}
+      )} */}
     </>
   );
 }

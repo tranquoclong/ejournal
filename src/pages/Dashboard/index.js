@@ -20,10 +20,13 @@ import AddPost from "./content/addPost";
 import ListingPost from "./content/listingPost";
 import University from "./content/university";
 import { NotificationContainer } from 'react-notifications';
+import { useIsLogin } from "../../hooks/useIsLogin";
+import ListPost from "./content/listPost";
 
 export default function Dashboard() {
   // useAuthenticated();
-  const ROUTES = [
+  const { admin } = useIsLogin();
+  const ROUTE = [
     {
       title: "bảng điều khiển",
       icon: <SettingOutlined />,
@@ -50,6 +53,7 @@ export default function Dashboard() {
       icon: <AppstoreOutlined />,
       href: "/dashboard/postListing",
       exact: false,
+      role: "ADMIN",
       Component: ListingPost,
     },
     {
@@ -57,16 +61,19 @@ export default function Dashboard() {
       icon: <BarsOutlined />,
       href: "/dashboard/postList",
       exact: false,
-      Component: ContentDashboard,
+      Component: ListPost,
     },
     {
       title: "Trường Học",
       icon: <ReadOutlined />,
       href: "/dashboard/university",
       exact: false,
+      role: "ADMIN",
       Component: University,
-    }
+    },
   ];
+  const ROUTES =
+    admin !== "ADMIN" ? ROUTE.filter((item) => item.role !== "ADMIN") : ROUTE;
   return (
     <div className="dashboard">
       <Link to="#" className="dashboard-responsive-nav-trigger">

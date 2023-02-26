@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
-import PaginationRe from '../../../../common/Paging';
-import { useDispatch } from 'react-redux';
-import { NotificationManager } from 'react-notifications';
-import { actActiveMajorAsync, actDeActiveMajorAsync } from '../../../../store/user/actions';
-
-function Major({ allMajor, setFormMajor }) {
+import React, { useState } from "react";
+import PaginationRe from "../../../../common/Paging";
+import { NotificationManager } from "react-notifications";
+import { useDispatch } from "react-redux";
+import {
+  actActiveUniversityAsync,
+  actDeActiveUniversityAsync,
+} from "../../../../store/user/actions";
+function University({ allUniversity, setFormUniversity }) {
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const onActive = (id) => {
     setIsLoading(true);
-    dispatch(actActiveMajorAsync(id, allMajor)).then((res) => {
+    dispatch(actActiveUniversityAsync(id, allUniversity)).then((res) => {
       if (res.ok) {
         NotificationManager.success("Active thành công");
       } else {
@@ -21,7 +23,7 @@ function Major({ allMajor, setFormMajor }) {
   };
   const onDeActive = (id) => {
     setIsLoading(true);
-    dispatch(actDeActiveMajorAsync(id, allMajor)).then((res) => {
+    dispatch(actDeActiveUniversityAsync(id, allUniversity)).then((res) => {
       if (res.ok) {
         NotificationManager.success("Deactive thành công");
       } else {
@@ -32,23 +34,33 @@ function Major({ allMajor, setFormMajor }) {
   };
   return (
     <div className="col-lg-6 col-md-12 col-xs-12 traffic">
-      <div className="dashboard-list-box margin-top-20">
-        <h4 className="gray">Danh sách các ngành học</h4>
+      <div className="dashboard-list-box with-icons margin-top-20">
+        <h4 className="gray">Danh sách các trường học</h4>
         <ul>
-          {allMajor && (
+          {allUniversity && (
             <>
-              {allMajor.slice(page, page + 5).map((major, index) => (
+              {allUniversity.slice(page, page + 5).map((university, index) => (
                 <li key={index}>
                   <div className="user-list-item">
                     <div className="user-list-content">
-                      <h4>{major.name}</h4>
-                      <span>{major.status}</span>
+                      <h4>{university.name}</h4>
+                      <span>{university.email}</span>
+                      <div
+                        class="numerical-rating high"
+                        style={{
+                          backgroundColor: "#666",
+                          width: "65px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        {university.status}
+                      </div>
                     </div>
                     <div className="user-btns">
-                      {major.status !== "ACTIVE" ? (
+                      {university.status !== "ACTIVE" ? (
                         <button
                           className="button"
-                          onClick={() => onActive(major.id)}
+                          onClick={() => onActive(university.id)}
                           disabled={isLoading}
                         >
                           Active
@@ -56,7 +68,7 @@ function Major({ allMajor, setFormMajor }) {
                       ) : (
                         <button
                           className="button"
-                          onClick={() => onDeActive(major.id)}
+                          onClick={() => onDeActive(university.id)}
                           disabled={isLoading}
                         >
                           DeActive
@@ -65,8 +77,8 @@ function Major({ allMajor, setFormMajor }) {
                       <button
                         className="button"
                         onClick={() =>
-                          setFormMajor({
-                            ...major,
+                          setFormUniversity({
+                           ...university,
                             status: "UPDATE",
                           })
                         }
@@ -82,7 +94,7 @@ function Major({ allMajor, setFormMajor }) {
                 page={page}
                 setPage={setPage}
                 count={5}
-                totalPages={allMajor.length}
+                totalPages={allUniversity.length}
               />
             </>
           )}
@@ -92,4 +104,4 @@ function Major({ allMajor, setFormMajor }) {
   );
 }
 
-export default Major
+export default University;

@@ -13,20 +13,20 @@ export default function ArticleItemHed({
     return null;
   }
 
-  const title = post.title.rendered;
-  const slugLink = `/post/${post.slug}`;
-  const thumbnails = post.featured_media_url;
+  const title = post.title;
+  const slugLink = `/post/${post.id}`;
+  const thumbnails = `https://source.unsplash.com/random/?book,post,${post.id}`;
 
-  const authorId = post.author;
-  const authorName = post.author_data.nickname;
-  const authorAvatar = post.author_data.avatar;
-  const authorLink = `/user/${post.author}`;
+  const authorId = post.id;
+  const authorName = post.id;
+  const authorAvatar = `https://source.unsplash.com/random/?book,post,${post.id}`;
+  const authorLink = `/user/${post.id}`;
 
-  const created = post.date;
+  const created = "1/2/2023";
 
-  const shortDesc = post.excerpt.rendered;
-  const viewCount = post.view_count;
-  const categoriesId = post.categories;
+  const shortDesc = post.status;
+  const viewCount = post.status;
+  const categoriesId = post.author;
 
   return (
     <section id="mt_banner">

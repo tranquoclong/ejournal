@@ -142,6 +142,154 @@ export function actPutMajorAsync({ name }, allMajor) {
   };
 }
 
+export function actActiveUniversityAsync(id, allUniversity) {
+  return async (dispatch) => {
+    try {
+      await UserService.activeUniversity({
+        id,
+      });
+       let indexUpdate = "";
+       indexUpdate = allUniversity.findIndex(
+         (u) => u.id === id
+       );
+      allUniversity[indexUpdate] = {
+        ...allUniversity[indexUpdate],
+        status: "ACTIVE",
+      };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actActiveMajorAsync(id, allMajor) {
+  return async (dispatch) => {
+    try {
+      await UserService.activeMajor({
+        id,
+      });
+      let indexUpdate = "";
+      indexUpdate = allMajor.findIndex((u) => u.id === id);
+      allMajor[indexUpdate] = {
+       ...allMajor[indexUpdate],
+       status: "ACTIVE",
+     };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actDeActiveUniversityAsync(id, allUniversity) {
+  return async (dispatch) => {
+    try {
+      await UserService.deactiveUniversity({
+        id,
+      });
+       let indexUpdate = "";
+       indexUpdate = allUniversity.findIndex((u) => u.id === id);
+       allUniversity[indexUpdate] = {
+         ...allUniversity[indexUpdate],
+         status: "DEACTIVE",
+       };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actDeActiveMajorAsync(id, allMajor) {
+  return async (dispatch) => {
+    try {
+      await UserService.deactiveMajor({
+        id,
+      });
+      let indexUpdate = "";
+      indexUpdate = allMajor.findIndex((u) => u.id === id);
+      allMajor[indexUpdate] = {
+        ...allMajor[indexUpdate],
+        status: "DEACTIVE",
+      };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actUpdateUniversityAsync(
+  { id , name, email, mailtype },
+  allUniversity
+) {
+  return async (dispatch) => {
+    try {
+      await UserService.updateUniversity({
+        id,
+        name,
+        email,
+        mailtype,
+      });
+     let indexUpdate = "";
+     indexUpdate = allUniversity.findIndex((u) => u.id === id);
+     allUniversity[indexUpdate] = {
+       ...allUniversity[indexUpdate],
+       name,
+       email,
+       mailtype,
+     };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actUpdateMajorAsync({ id, name }, allMajor) {
+  return async (dispatch) => {
+    try {
+      await UserService.updateMajor({
+        name,
+      });
+      let indexUpdate = "";
+      indexUpdate = allMajor.findIndex((u) => u.id === id);
+      allMajor[indexUpdate] = {
+        ...allMajor[indexUpdate],
+        name,
+      };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
 export function actChangePasswordAsync({ oldPassword, newPassword }) {
   return async (dispatch) => {
     try {

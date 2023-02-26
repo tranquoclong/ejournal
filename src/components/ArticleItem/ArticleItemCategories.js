@@ -6,9 +6,9 @@ export default function ArticleItemCategories({ categoriesId }) {
       <ul>
         {categoriesId.map((cateId) => {
           return (
-            <li className="cat-pink" key={cateId}>
-              <Link to={`/category/${cateId}`} className="white">
-                {cateId}
+            <li className="cat-pink" key={cateId.fullname}>
+              <Link to={`/category/${cateId.fullname}`} className="white">
+                {cateId.fullname}
               </Link>
             </li>
           );

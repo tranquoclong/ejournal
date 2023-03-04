@@ -5,23 +5,65 @@ import {
   TeamOutlined,
   HeartOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { actGetAllAsync } from "../../../store/user/actions";
+import {
+  actActiveAccountAsync,
+  actGetAllAsync,
+  actGetAllRoleAsync,
+  actDeActiveAccountAsync,
+  actGetAccountAsync,
+} from "../../../store/user/actions";
 import PaginationRe from "../../../common/Paging";
+import { NotificationManager } from 'react-notifications';
+import { OPEN_MODAL } from "../../../store/modal/actions";
+import UpdateRoleModal from "../../../components/Modal/updateRoleModal";
 function ContentDashboard() {
   const dispatch = useDispatch();
-  const allUser = useSelector((state) => state.User.allUser);
+  const { allUser, role, detailUser } = useSelector((state) => state.User);
   const [page, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(
     () => {
       dispatch(actGetAllAsync());
+      dispatch(actGetAllRoleAsync());
+      dispatch(actGetAccountAsync("1"));
     },
     // eslint-disable-next-line
     []
   );
+   const detailUsers = (id) => {
+     dispatch(actGetAccountAsync(id));
+   };
+    const onActive = (id) => {
+      setIsLoading(true);
+      dispatch(actActiveAccountAsync(id, allUser)).then((res) => {
+        if (res.ok) {
+          NotificationManager.success("Active thành công");
+        } else {
+          NotificationManager.error("Active thất bại");
+        }
+        setIsLoading(false);
+      });
+    };
+    const onDeActive = (id) => {
+      setIsLoading(true);
+      dispatch(actDeActiveAccountAsync(id, allUser)).then((res) => {
+        if (res.ok) {
+          NotificationManager.success("Deactive thành công");
+        } else {
+          NotificationManager.error("Deactive thất bại");
+        }
+        setIsLoading(false);
+      });
+    };
+      const onGrantUser = (id, role) => {
+        dispatch({
+          type: OPEN_MODAL,
+          payload: <UpdateRoleModal id={id} role={role} />,
+        });
+      };
   return (
     <div className="dashboard-content">
       <div className="row">
@@ -88,48 +130,19 @@ function ContentDashboard() {
       <div className="row">
         <div className="col-lg-12 col-md-12 col-xs-12 traffic">
           <div className="dashboard-list-box">
-            <h4 className="gray">Bài viết gần đây</h4>
+            <h4 className="gray">Danh sách quyền truy cập</h4>
             <div className="table-box">
               <table className="basic-table">
                 <thead>
                   <tr>
-                    <th>Ngày</th>
-                    <th>ID</th>
-                    <th>Tiêu đề</th>
-                    <th>Không có bài viết</th>
-                    <th>Xem</th>
+                    {role &&
+                      role.map((role, index) => (
+                        <th style={{ border: "2px solid #333" }} key={index}>
+                          {role.name}
+                        </th>
+                      ))}
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>01/01/2017</td>
-                    <td className="t-id">C001</td>
-                    <td>Dubai</td>
-                    <td>5</td>
-                    <td>245</td>
-                  </tr>
-                  <tr>
-                    <td>01/01/2017</td>
-                    <td className="t-id">C081</td>
-                    <td>Grece - Zakynthos</td>
-                    <td>5</td>
-                    <td>245</td>
-                  </tr>
-                  <tr>
-                    <td>01/01/2017</td>
-                    <td className="t-id">C001</td>
-                    <td>Bulgary - Sunny Beach</td>
-                    <td>5</td>
-                    <td>245</td>
-                  </tr>
-                  <tr>
-                    <td>01/01/2017</td>
-                    <td className="t-id">C001</td>
-                    <td>France - Paris</td>
-                    <td>5</td>
-                    <td>245</td>
-                  </tr>
-                </tbody>
               </table>
             </div>
           </div>
@@ -137,69 +150,6 @@ function ContentDashboard() {
       </div>
       <div className="row">
         <div className="col-lg-7 col-md-12 col-xs-12 traffic">
-          <div className="dashboard-list-box with-icons margin-top-20">
-            <h4 className="gray">Các hoạt động gần đây</h4>
-            <ul>
-              <li>
-                <i className="list-box-icon sl sl-icon-layers" /> Your listing
-                <strong>
-                  <Link to="#">Hotel Govendor</Link>
-                </strong>{" "}
-                has been approved!
-                <Link to="#" className="close-list-item">
-                  <i className="fa fa-close" />
-                </Link>
-              </li>
-              <li>
-                <i className="list-box-icon sl sl-icon-star" /> Kathy Brown left
-                a review
-                <div className="numerical-rating high" data-rating={5.0} />
-                on{" "}
-                <strong>
-                  <Link to="#">Burger House</Link>
-                </strong>
-                <Link to="#" className="close-list-item">
-                  <i className="fa fa-close" />
-                </Link>
-              </li>
-              <li>
-                <i className="list-box-icon sl sl-icon-heart" /> Someone
-                bookmarked your
-                <strong>
-                  <Link to="#">Burger House</Link>
-                </strong>{" "}
-                listing!
-                <Link to="#" className="close-list-item">
-                  <i className="fa fa-close" />
-                </Link>
-              </li>
-              <li>
-                <i className="list-box-icon sl sl-icon-star" /> Kathy Brown left
-                a review
-                <div className="numerical-rating mid" data-rating={3.0} />
-                on{" "}
-                <strong>
-                  <Link to="#">Airport</Link>
-                </strong>
-                <Link to="#" className="close-list-item">
-                  <i className="fa fa-close" />
-                </Link>
-              </li>
-              <li>
-                <i className="list-box-icon sl sl-icon-heart" /> Someone
-                bookmarked your
-                <strong>
-                  <Link to="#">Burger House</Link>
-                </strong>{" "}
-                listing!
-                <Link to="#" className="close-list-item">
-                  <i className="fa fa-close" />
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-lg-5 col-md-12 col-xs-12 traffic">
           <div className="dashboard-list-box margin-top-20 user-list">
             <h4 className="gray">Danh sách người dùng</h4>
             <ul>
@@ -223,12 +173,35 @@ function ContentDashboard() {
                           <span>{user.status}</span>
                         </div>
                         <div className="user-btns">
-                          <Link to="#" className="button">
+                          {user.status === "INACTIVE" ? (
+                            <button
+                              className="button"
+                              onClick={() => onActive(user.id)}
+                              disabled={isLoading}
+                            >
+                              Active
+                            </button>
+                          ) : (
+                            <button
+                              className="button"
+                              onClick={() => onDeActive(user.id)}
+                              disabled={isLoading}
+                            >
+                              DeActive
+                            </button>
+                          )}
+                          <button
+                            className="button"
+                            onClick={() => detailUsers(user.id)}
+                          >
                             View
-                          </Link>
-                          <Link to="#" className="button">
+                          </button>
+                          <button
+                            className="button"
+                            onClick={() => onGrantUser(user.id, user.rolename)}
+                          >
                             Edit
-                          </Link>
+                          </button>
                         </div>
                       </div>
                     </li>
@@ -242,6 +215,75 @@ function ContentDashboard() {
                 </>
               )}
             </ul>
+          </div>
+        </div>
+        <div className="col-lg-5 col-md-12 col-xs-12 traffic">
+          <div className="dashboard-list-box with-icons margin-top-20">
+            <h4 className="gray">Chi tiết người dùng</h4>
+            {detailUser && (
+              <ul>
+                <div className="edit-profile-photo">
+                  <img
+                    src={
+                      detailUser[0].avatar
+                        ? detailUser[0].avatar
+                        : `https://source.unsplash.com/random/?book,post${detailUser[0].id}`
+                    }
+                    alt=""
+                    style={{ height: "125px" }}
+                  />
+                </div>
+                <div
+                  className="my-profile"
+                  style={{ display: "flex", marginLeft: "15px" }}
+                >
+                  <h5>Tên tài khoản :</h5>
+                  <h5>{detailUser[0].username}</h5>
+                </div>
+                <div
+                  className="my-profile"
+                  style={{ display: "flex", marginLeft: "15px" }}
+                >
+                  <h5>Tên đầy đủ :</h5>
+                  <h5>{detailUser[0].fullname}</h5>
+                </div>
+                <div
+                  className="my-profile"
+                  style={{ display: "flex", marginLeft: "15px" }}
+                >
+                  <h5>Giới tính :</h5>
+                  <h5>{detailUser[0].gender ? "male" : "female"}</h5>
+                </div>
+                <div
+                  className="my-profile"
+                  style={{ display: "flex", marginLeft: "15px" }}
+                >
+                  <h5>Số điện thoại :</h5>
+                  <h5>{detailUser[0].phone}</h5>
+                </div>
+                <div
+                  className="my-profile"
+                  style={{ display: "flex", marginLeft: "15px" }}
+                >
+                  <h5>Email :</h5>
+                  <h5>{detailUser[0].email}</h5>
+                </div>
+                <div
+                  className="my-profile"
+                  style={{ display: "flex", marginLeft: "15px" }}
+                >
+                  <h5>Trạng thái :</h5>
+                  <h5>{detailUser[0].status}</h5>
+                </div>
+                <div
+                  className="my-profile"
+                  style={{ display: "flex", marginLeft: "15px" }}
+                >
+                  <h5>Quyền truy cập :</h5>
+                  <h5>{detailUser[0].role}</h5>
+                </div>
+              </ul>
+            )}
           </div>
         </div>
       </div>

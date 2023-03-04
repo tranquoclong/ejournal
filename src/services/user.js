@@ -7,6 +7,9 @@ export const UserService = {
   getAllUser() {
     return api.callWithAuth().get("/account/");
   },
+  getAllRole() {
+    return api.callWithAuth().get("/admin/role/");
+  },
   getAllUniversity() {
     return api.callWithAuth().get("/university/");
   },
@@ -14,6 +17,9 @@ export const UserService = {
     return api
       .callWithAuth()
       .put("/university/add/", { name, email, mailtype });
+  },
+  postUpdateAccount(id, roleId) {
+    return api.callWithAuth().put("/account/update/", { id, roleid: roleId });
   },
   activeUniversity({ id }) {
     return api.callWithAuth().put("/university/active/", { id });
@@ -46,5 +52,14 @@ export const UserService = {
       oldPassword,
       newPassword,
     });
+  },
+  activeUser({ id }) {
+    return api.callWithAuth().put("/account/active/", { id });
+  },
+  deactiveUser({ id }) {
+    return api.callWithAuth().put("/account/deactive/", { id });
+  },
+  detailUser({ id }) {
+    return api.callWithAuth().post("/account/info/", { id });
   },
 };

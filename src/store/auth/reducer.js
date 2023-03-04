@@ -34,6 +34,4 @@ export default function reducer(state = initAuthState, action) {
     default:
       return state;
   }
-
-  
 }

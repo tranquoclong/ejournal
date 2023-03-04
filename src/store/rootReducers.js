@@ -5,6 +5,7 @@ import User from "./user/reducer";
 import Category from "./category/reducer";
 import Menus from "./menus/reducer";
 import Comments from "./comments/reducer";
+import Modal from "./modal/reducer";
 import App from "./app/reducer";
 
 export default combineReducers({
@@ -14,5 +15,6 @@ export default combineReducers({
   Category,
   Menus,
   Comments,
+  Modal,
   App,
 });

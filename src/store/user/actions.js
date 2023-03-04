@@ -2,17 +2,24 @@ import { UserService } from "../../services/user";
 // import { actSetToken } from "../auth/actions";
 
 export const ACT_GET_ME = "ACT_GET_ME";
+export const ACT_GET_ROLE = "ACT_GET_ROLE";
 export const ACT_ALL_USER = "ACT_ALL_USER";
 export const ACT_ALL_UNIVERSITY = "ACT_ALL_UNIVERSITY";
 export const ACT_ALL_MAJOR = "ACT_ALL_MAJOR";
 export const ACT_CHANGE_PASSWORD = "ACT_CHANGE_PASSWORD";
-
+export const ACT_DETAIL_USER = "ACT_DETAIL_USER";
 export function actGetMe(currentUser) {
   return {
     type: ACT_GET_ME,
     payload: {
       currentUser,
     },
+  };
+}
+export function actGetRole(role) {
+  return {
+    type: ACT_GET_ROLE,
+    payload: { role },
   };
 }
 
@@ -39,6 +46,15 @@ export function actAllMajor(allMajor) {
     type: ACT_ALL_MAJOR,
     payload: {
       allMajor,
+    },
+  };
+}
+
+export function actDetailUser(detailUser) {
+  return {
+    type: ACT_DETAIL_USER,
+    payload: {
+      detailUser,
     },
   };
 }
@@ -94,6 +110,16 @@ export function actPutUniversityAsync({ name, email, mailtype }, allUniversity) 
 export function actGetAllAsync() {
   return async (dispatch) => {
     try {
+      const response = await UserService.getAllRole();
+      dispatch(actGetRole(response.data.list));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+export function actGetAllRoleAsync() {
+  return async (dispatch) => {
+    try {
       const response = await UserService.getAllUser();
       dispatch(actAllUser(response.data.list));
     } catch (e) {
@@ -101,7 +127,6 @@ export function actGetAllAsync() {
     }
   };
 }
-
 export function actGetAllUniversity() {
   return async (dispatch) => {
     try {
@@ -320,6 +345,82 @@ export function actChangePasswordAsync({ oldPassword, newPassword }) {
       return {
         ok: false,
         message: mapError.default,
+      };
+    }
+  };
+}
+
+export function actActiveAccountAsync(id, allUser) {
+  return async (dispatch) => {
+    try {
+      await UserService.activeUser({
+        id,
+      });
+      let indexUpdate = "";
+      indexUpdate = allUser.findIndex((u) => u.id === id);
+      allUser[indexUpdate] = {
+        ...allUser[indexUpdate],
+        status: "ACTIVE",
+      };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actDeActiveAccountAsync(id, allUser) {
+  return async (dispatch) => {
+    try {
+      await UserService.deactiveUser({
+        id,
+      });
+      let indexUpdate = "";
+      indexUpdate = allUser.findIndex((u) => u.id === id);
+      allUser[indexUpdate] = {
+        ...allUser[indexUpdate],
+        status: "INACTIVE",
+      };
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+export function actGetAccountAsync(id) {
+  return async (dispatch) => {
+    try {
+      const response = await UserService.detailUser({id});
+      dispatch(actDetailUser(response.data));
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actUpdateAccountAsync(id, roleId) {
+  return async (dispatch) => {
+    try {
+      await UserService.postUpdateAccount(id, roleId);
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
       };
     }
   };

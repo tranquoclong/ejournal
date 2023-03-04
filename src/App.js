@@ -44,28 +44,22 @@ function App() {
   return (
     <main className="home-default">
       {!routeMatch && <Header />}
-
       <Switch>
         <Route path="/login">
           <LoginPage />
         </Route>
-
         <Route path="/search">
           <SearchPage />
         </Route>
-
         <Route path="/category/:slug">
           <CategoryPage />
         </Route>
-
         <Route path="/post/:slug">
           <PostDetailPage />
         </Route>
-
         <Route path="/dashboard">
           <Dashboard />
         </Route>
-
         <Route path="/" exact>
           <HomePage />
         </Route>

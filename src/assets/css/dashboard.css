@@ -3223,7 +3223,7 @@ a.dashboard-responsive-nav-trigger {
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 9999;
+  z-index: 12;
   background: #242526;
   box-shadow: 0px 0px 5px #cccccc57;
 }

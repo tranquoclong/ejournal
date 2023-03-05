@@ -6,7 +6,7 @@ export const PostService = {
     return api.call().get("/article/");
   },
   getListManus() {
-    return api.call().get("/article/manuscript/");
+    return api.call().get("/editor/manuscript/");
   },
   getLatestPosts({ lang }) {
     return PostService.getListPosts({ lang });
@@ -26,5 +26,11 @@ export const PostService = {
       author: authorId,
       exclude,
     });
+  },
+  updateStatusPost(path, id) {
+    return api.call().put(`/editor/${path}/`, { id });
+  },
+  postArticle(values) {
+    return api.call().post("article/submit/", { values });
   },
 };

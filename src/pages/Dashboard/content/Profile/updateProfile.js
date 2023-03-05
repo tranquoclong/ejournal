@@ -1,37 +1,73 @@
 import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useIsLogin } from "../../../../hooks/useIsLogin";
-import { actChangePasswordAsync } from "../../../../store/user/actions";
+import { actChangeProfileAsync } from "../../../../store/user/actions";
 import { NotificationManager } from "react-notifications";
+import { storeImageToFireBase } from "../../../../utils/storeImageToFirebase.";
+import { UserService } from "../../../../services/user";
 
 function UpdateProfile() {
   const dispatch = useDispatch();
-  const { currentUser } = useIsLogin();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    fullname: currentUser.fullname,
-    email: currentUser.email,
-    phone: currentUser.phone,
-  });
+    useEffect(() => {
+      const getAccountInfo = async () => {
+        const response = await UserService.profile();
+        setFormData(response.data[0]);
+      };
+      getAccountInfo();
+      // eslint-disable-next-line
+    }, []);
+
+  const [formData, setFormData] = useState({});
+    const [selectedFile, setSelectedFile] = useState();
+    useEffect(
+      () => {
+        const uploadImage = async () => {
+          setIsLoading(true);
+          if (!selectedFile) {
+            setIsLoading(false);
+            return;
+          }
+          const { isSuccess, imageUrl, message } = await storeImageToFireBase(
+            selectedFile
+          );
+          if (isSuccess) {
+                  setFormData({
+                    ...formData,
+                    avatar: imageUrl,
+                  });
+            setIsLoading(false);
+            return imageUrl;
+          } else {
+            console.log(message);
+          }
+          setIsLoading(false);
+        };
+        uploadImage();
+      },
+      // eslint-disable-next-line
+      [selectedFile]
+    );
+    const onSelectFile = (e) => {
+      if (!e.target.files || e.target.files.length === 0) {
+        setSelectedFile(undefined);
+        return;
+      }
+      setSelectedFile(e.target.files[0]);
+    };
   function onFinish(evt) {
     evt.preventDefault();
     if (isLoading) {
       return;
     }
     setIsLoading(true);
-    dispatch(actChangePasswordAsync(formData)).then((res) => {
+    dispatch(actChangeProfileAsync(formData, formData.id)).then((res) => {
       if (res.ok) {
-        NotificationManager.success("đổi mật khẩu thành công");
-        setFormData({
-          oldPassword: "",
-          newPassword: "",
-          passwordReg: "",
-        });
+        NotificationManager.success("đổi thông tin thành công");
       } else {
-        NotificationManager.error("đổi mật khẩu thất bại");
+        NotificationManager.error("đổi thông tin thất bại");
       }
       setIsLoading(false);
     });
@@ -53,9 +89,9 @@ function UpdateProfile() {
           <div className="edit-profile-photo">
             <img
               src={
-                currentUser.avatar === null
-                  ? `https://source.unsplash.com/random/?book,post,${currentUser.id}`
-                  : currentUser.avatar
+                formData.avatar === null
+                  ? `https://source.unsplash.com/random/?book,post,${formData.id}`
+                  : formData.avatar
               }
               alt=""
             />
@@ -64,7 +100,13 @@ function UpdateProfile() {
                 <span>
                   <PlusCircleOutlined /> Tải ảnh lên
                 </span>
-                <input type="file" className="upload" />
+                <input
+                  className="upload"
+                  type="file"
+                  name="profileImageUrl"
+                  accept="image/*"
+                  onChange={onSelectFile}
+                />
               </div>
             </div>
           </div>
@@ -91,16 +133,20 @@ function UpdateProfile() {
               value={formData.email}
               onChange={handleChange("email")}
             />
-            <label>Tiểu sử *</label>
-            <textarea
-              name="notes"
-              id="notes"
-              cols={30}
-              rows={10}
-              defaultValue={
-                "Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi ultricies laoreet ullamcorper phasellus semper"
-              }
-            />
+            <label>Giới tính *</label>
+            <select
+              className="chosen-select-no-single"
+              style={{
+                background: "rgb(53, 54, 58)",
+                color: "#ddd",
+              }}
+              value={formData.gender}
+              onChange={handleChange("gender")}
+              required
+            >
+              <option value={true}>Nam</option>
+              <option value={false}>Nữ</option>
+            </select>
           </div>
           <button className="button">Lưu thay đổi</button>
         </form>

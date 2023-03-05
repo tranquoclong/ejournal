@@ -1,16 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useForm from "../../../../hooks/useForm";
-// import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { validateAddPost } from "../../../../components/Validate/validateInput";
+import { NotificationManager } from 'react-notifications';
+import { actPostArticleAsync } from "../../../../store/post/actions";
+import { useIsLogin } from "../../../../hooks/useIsLogin";
+import { actGetAllMajor } from "../../../../store/user/actions";
 function AddPost() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { currentUser } = useIsLogin();
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validateAddPost
   );
+  const allMajor = useSelector((state) => state.User.allMajor);
+    useEffect(
+      () => {
+        dispatch(actGetAllMajor());
+      },
+      // eslint-disable-next-line
+      []
+    );
   function login() {
-    console.log(values);
-    // dispatch(postLogin(values.title));
+    values.authorlist = [
+      {
+        fullname: currentUser.fullname,
+        email: currentUser.email,
+        iscorresponding: true,
+      },
+    ];
+    values.openaccess = values.openaccess === true;
+    dispatch(actPostArticleAsync(values)).then((res) => {
+      if (res.ok) {
+        NotificationManager.success("Cập nhật thành công");
+      } else {
+        NotificationManager.error("Cập nhật thất bại");
+      }
+    });
   }
   return (
     <div className="dashboard-content">
@@ -82,9 +108,11 @@ function AddPost() {
                       value={values.majorid || ""}
                       required
                     >
-                      <option>Lựa chọn ngành học</option>
-                      <option>it</option>
-                      <option>marketing</option>
+                      {allMajor &&allMajor.map((major, index) => (
+                        <option value={major.id} key={index}>
+                          {major.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>

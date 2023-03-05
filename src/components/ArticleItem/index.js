@@ -26,6 +26,7 @@ export default function ArticleItem({
   }
 
   const title = post.title;
+  const id = post.id;
   const slugLink = `/post/${post.id}`;
   const thumbnail = `https://source.unsplash.com/random/?book,post,${post.id}`;
 
@@ -56,7 +57,7 @@ export default function ArticleItem({
         {isShowCategories && (
           <ArticleItemCategories categoriesId={categoriesId} />
         )}
-        {isShowCategories && <ArticleItemStats viewCount={viewCount} />}
+        {isShowCategories && <ArticleItemStats viewCount={viewCount} id={id} />}
 
         <ArticleItemTitle title={title} slugLink={slugLink} />
 

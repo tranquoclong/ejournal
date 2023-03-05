@@ -32,6 +32,7 @@ export default function Dashboard() {
       icon: <SettingOutlined />,
       href: "/dashboard",
       exact: true,
+      role: ["ADMIN"],
       Component: ContentDashboard,
     },
     {
@@ -39,6 +40,14 @@ export default function Dashboard() {
       icon: <UserOutlined />,
       href: "/dashboard/profile",
       exact: true,
+      role: [
+        "ADMIN",
+        "EDITOR_IN_CHIEF",
+        "EDITOR",
+        "REVIEWER",
+        "AUTHOR",
+        "MEMBER",
+      ],
       Component: Profile,
     },
     {
@@ -46,6 +55,7 @@ export default function Dashboard() {
       icon: <PlusCircleOutlined />,
       href: "/dashboard/addPost",
       exact: false,
+      role: ["AUTHOR"],
       Component: AddPost,
     },
     {
@@ -53,7 +63,7 @@ export default function Dashboard() {
       icon: <AppstoreOutlined />,
       href: "/dashboard/postListing",
       exact: false,
-      role: "ADMIN",
+      role: ["EDITOR", "REVIEWER"],
       Component: ListingPost,
     },
     {
@@ -61,6 +71,14 @@ export default function Dashboard() {
       icon: <BarsOutlined />,
       href: "/dashboard/postList",
       exact: false,
+      role: [
+        "ADMIN",
+        "EDITOR_IN_CHIEF",
+        "EDITOR",
+        "REVIEWER",
+        "AUTHOR",
+        "MEMBER",
+      ],
       Component: ListPost,
     },
     {
@@ -68,12 +86,11 @@ export default function Dashboard() {
       icon: <ReadOutlined />,
       href: "/dashboard/university",
       exact: false,
-      role: "ADMIN",
+      role: ["ADMIN"],
       Component: University,
     },
   ];
-  const ROUTES =
-    admin !== "ADMIN" ? ROUTE.filter((item) => item.role !== "ADMIN") : ROUTE;
+  const ROUTES = ROUTE.filter((item) => item.role.includes(admin));
   return (
     <div className="dashboard">
       <Link to="#" className="dashboard-responsive-nav-trigger">

@@ -6,7 +6,6 @@ import { actFetchManusAsync } from "../../../../store/post/actions";
 function ListingPost() {
   const dispatch = useDispatch();
   const manuscript = useSelector((state) => state.Post.manuscript);
-  console.log("🚀 ~ file: index.js:9 ~ ListingPost ~ manuscript:", manuscript)
   useEffect(
     () => {
       dispatch(actFetchManusAsync());
@@ -16,7 +15,7 @@ function ListingPost() {
   );
   return (
     <div className="dashboard-content">
-      <section id="mt_blog" className>
+      <section id="mt_blog">
         <div className="row">
           <div className="col-md-12">
             <div className="blog_post_sec blog_post_inner">

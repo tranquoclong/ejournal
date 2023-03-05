@@ -43,9 +43,7 @@ export function actFetchPopularPosts({ posts = [] } = {}) {
 export function actFetchPosts(posts) {
   return {
     type: ACT_FETCH_POSTS,
-    payload: {
-      posts
-    },
+    payload: posts,
   };
 }
 export function actFetchManus(manuscript) {
@@ -123,12 +121,7 @@ export const actFetchPostsAsync = () => {
   return async (dispatch) => {
     try {
       const response = await PostService.getListPosts();
-      const posts = response.data;
-      dispatch(
-        actFetchPosts({
-          posts,
-        })
-      );
+      dispatch(actFetchPosts(response.data.list));
     } catch (e) {}
   };
 };
@@ -216,5 +209,35 @@ export function actFetchRelatedAuthorPostAsync({ author, exclude }) {
       const posts = response.data;
       dispatch(actFetchRelatedAuthorPost({ posts }));
     } catch (e) {}
+  };
+}
+
+export function actUpdateStatusPostAsync(path, id) {
+  return async (dispatch) => {
+    try {
+      await PostService.updateStatusPost(path, id);
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actPostArticleAsync(values) {
+  return async (dispatch) => {
+    try {
+      await PostService.postArticle(values);
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
   };
 }

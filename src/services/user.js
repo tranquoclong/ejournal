@@ -53,6 +53,12 @@ export const UserService = {
       newPassword,
     });
   },
+  changeProfile(formData) {
+    return api.callWithAuth().put("profile/update/", formData);
+  },
+  profile() {
+    return api.callWithAuth().get("profile/");
+  },
   activeUser({ id }) {
     return api.callWithAuth().put("/account/active/", { id });
   },

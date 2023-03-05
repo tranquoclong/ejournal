@@ -349,6 +349,22 @@ export function actChangePasswordAsync({ oldPassword, newPassword }) {
     }
   };
 }
+export function actChangeProfileAsync(formData,id) {
+  return async (dispatch) => {
+    try {
+      await UserService.changeProfile(formData);
+      // dispatch(actGetMeAsync({ id }));
+      return {
+        ok: true,
+      };
+    } catch (err) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
 
 export function actActiveAccountAsync(id, allUser) {
   return async (dispatch) => {

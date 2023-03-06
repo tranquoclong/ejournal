@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { CLOSE_MODAL } from "../../store/modal/actions";
 import { NotificationManager } from "react-notifications";
-import { actUpdateAccountAsync } from "../../store/user/actions";
 import { actUpdateStatusPostAsync } from "../../store/post/actions";
 
 export const ModalFooter = styled.div`
@@ -102,10 +101,10 @@ const Message = styled.div`
 const ManuscriptModal = ({id}) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const manuscript = useSelector((state) => state.Post.manuscript);
   const onSubmit = (path) => {
     setIsLoading(true);
-    dispatch(actUpdateStatusPostAsync(path, id)).then((res) => {
+    dispatch(actUpdateStatusPostAsync(path, id, manuscript)).then((res) => {
       if (res.ok) {
         NotificationManager.success("Cập nhật thành công");
       } else {

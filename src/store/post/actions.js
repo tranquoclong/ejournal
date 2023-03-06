@@ -164,12 +164,11 @@ export const actFetchPostsSearchAsync = ({
   };
 };
 
-export function actFetchPostDetailAsync({ slug }) {
+export function actFetchPostDetailAsync(slug) {
   return async (dispatch) => {
     try {
       const response = await PostService.getPostBySlug(slug);
-      const post = response.data[0];
-
+      const post = response.data.article[0];
       if (!post) {
         throw new Error("No post");
       }
@@ -212,10 +211,12 @@ export function actFetchRelatedAuthorPostAsync({ author, exclude }) {
   };
 }
 
-export function actUpdateStatusPostAsync(path, id) {
+export function actUpdateStatusPostAsync(path, id, manuscript) {
   return async (dispatch) => {
     try {
       await PostService.updateStatusPost(path, id);
+      const response = manuscript.filter(m => m.id !== id);
+      dispatch(actFetchManus(response));
       return {
         ok: true,
       };

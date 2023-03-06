@@ -1,17 +1,8 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from "react-redux";
+import React from 'react'
+import { useSelector } from "react-redux";
 import ArticleItem from '../../../../components/ArticleItem';
-import { actFetchPostsAsync } from '../../../../store/post/actions';
 function ListPost() {
-      const dispatch = useDispatch();
-      const articles = useSelector((state) => state.Post.articles);
-      useEffect(
-        () => {
-          dispatch(actFetchPostsAsync());
-        },
-        // eslint-disable-next-line
-        []
-      );
+  const articles = useSelector((state) => state.Post.articles);
   return (
     <div className="dashboard-content">
       <section id="mt_blog" className>

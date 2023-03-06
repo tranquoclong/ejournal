@@ -63,7 +63,7 @@ export default function Dashboard() {
       icon: <AppstoreOutlined />,
       href: "/dashboard/postListing",
       exact: false,
-      role: ["EDITOR", "REVIEWER"],
+      role: ["EDITOR"],
       Component: ListingPost,
     },
     {
@@ -72,7 +72,6 @@ export default function Dashboard() {
       href: "/dashboard/postList",
       exact: false,
       role: [
-        "ADMIN",
         "EDITOR_IN_CHIEF",
         "EDITOR",
         "REVIEWER",

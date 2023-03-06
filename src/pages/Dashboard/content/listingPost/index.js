@@ -32,6 +32,7 @@ function ListingPost() {
                             post={post}
                             isStyleRow
                             isShowCategories
+                            isEditor={true}
                           />
                         </div>
                       );

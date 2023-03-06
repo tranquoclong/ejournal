@@ -1,11 +1,10 @@
 // import PostComments from "./PostComments";
 import PostDetailTags from "./PostDetailTags";
-// import { useSelector } from "react-redux";
-import { post } from "../../data";
+import { useSelector } from "react-redux";
 
 function PostDetailContent() {
   // const slug = useSelector(state => state.Posts.currentPostSlug);
-  // const post = useSelector((state) => state.Post.postDetail);
+  const post = useSelector((state) => state.Post.postDetail);
 
   if (!post) {
     return <div>Post detail content</div>;
@@ -17,7 +16,7 @@ function PostDetailContent() {
         <div
           className="rte"
           dangerouslySetInnerHTML={{
-            __html: post.content.rendered,
+            __html: post.summary,
           }}
         />
       </div>

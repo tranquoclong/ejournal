@@ -1,24 +1,13 @@
 import ArticleItem from "../ArticleItem";
-import Button from "../../common/Button";
-import { actFetchPostsAsync } from "../../store/post/actions";
-import { usePaging } from "../../hooks/usePaging";
 import MainTitle from "../../common/MainTitle";
-import { posts } from "../../data";
+import { useSelector } from "react-redux";
 
 export default function ArticlesList() {
-  // const {
-  //   loading,
-  //   // items: posts,
-  //   handleLoadMore,
-  //   hasMoreItems,
-  // } = usePaging({
-  //   funcSelector: (state) => state.Post.articlesPaging,
-  //   actionAsync: actFetchPostsAsync,
-  // });
+  const articles = useSelector((state) => state.Post.articles);
   return (
     <>
       <MainTitle>Danh sách bài viết</MainTitle>
-      {posts.map((post) => {
+      {articles && articles.map((post) => {
         return (
           <div className="col-md-6 col-sm-12 mar-bottom-30" key={post.id}>
             <ArticleItem post={post} isStyleRow isShowCategories />

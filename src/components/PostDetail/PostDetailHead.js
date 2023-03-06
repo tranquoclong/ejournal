@@ -1,20 +1,18 @@
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import ArticleItemCategories from "../ArticleItem/ArticleItemCategories";
-import { post } from "../../data";
 
 function PostDetailHead({ isShowCategories = false }) {
-  // const post = useSelector((state) => state.Post.postDetail);
-
+  const post = useSelector((state) => state.Post.postDetail);
   if (!post) {
     return <div></div>;
   }
-  const thumbnails = post.featured_media_url;
-  const postTitle = post.title.rendered;
-  const postAuthorName = post.author_data.nickname;
-  const postCmtCount = post.comment_count;
-  const postViewCount = post.view_count;
-  const categoriesId = post.categories;
+  const thumbnails = `https://source.unsplash.com/random/?book,post,${post.id}`;
+  const postTitle = post.title;
+  const postAuthorName = post.author;
+  const postCmtCount = post.status;
+  const postViewCount = post.status;
+  const categoriesId = post.author;
   const date = dayjs(new Date(post.date));
   const dateStr = date.format("DD/MM/YYYY");
 
@@ -34,7 +32,7 @@ function PostDetailHead({ isShowCategories = false }) {
             <div className="item-meta">
               <span style={{ paddingRight: "10px" }}>by</span>
               <a href="/">
-                <strong>{postAuthorName}</strong>
+                <strong>{postAuthorName[0].fullname}</strong>
               </a>
               <p>{dateStr}</p>
               <div style={{ display: "flex", alignItems: "baseline" }}>

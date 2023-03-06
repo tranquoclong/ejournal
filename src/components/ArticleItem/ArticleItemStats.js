@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { OPEN_MODAL } from "../../store/modal/actions";
 import ManuscriptModal from "../Modal/manuscriptModal";
 
-export default function ArticleItemStats({ viewCount, id }) {
+export default function ArticleItemStats({ viewCount, id, isEditor }) {
   const dispatch = useDispatch();
   const onModal = () => {
     dispatch({
@@ -16,11 +16,13 @@ export default function ArticleItemStats({ viewCount, id }) {
         <i className="icons ion-ios-eye"></i>
         <span className="text">{viewCount}</span>
       </li>
-      <li className="cat-pink">
-        <span className="text" onClick={() => onModal()}>
-          Cấp Quyền
-        </span>
-      </li>
+      {isEditor && (
+        <li className="cat-pink">
+          <span className="text" onClick={() => onModal()}>
+            Cấp Quyền
+          </span>
+        </li>
+      )}
     </ul>
   );
 }

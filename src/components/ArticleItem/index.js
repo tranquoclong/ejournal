@@ -15,6 +15,7 @@ export default function ArticleItem({
   isShowDesc = false,
   isShowCategories = false,
   isShowCategoriesImg = false,
+  isEditor,
 }) {
   const classes = cls("blog-post_wrapper", {
     "blog-post_wrapper image-wrapper": isStyleRow,
@@ -57,7 +58,7 @@ export default function ArticleItem({
         {isShowCategories && (
           <ArticleItemCategories categoriesId={categoriesId} />
         )}
-        {isShowCategories && <ArticleItemStats viewCount={viewCount} id={id} />}
+        <ArticleItemStats viewCount={viewCount} id={id} isEditor={isEditor} />
 
         <ArticleItemTitle title={title} slugLink={slugLink} />
 

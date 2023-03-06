@@ -58,7 +58,7 @@ function PostDetailTags(props) {
             <Link to="/">Travel</Link>
           </div>
         </div>
-        <div className="author_box">
+        {/* <div className="author_box">
           <div className="author_img">
             <img
               src="https://avatars.githubusercontent.com/u/98083474?v=4"
@@ -97,8 +97,8 @@ function PostDetailTags(props) {
               </li>
             </ul>
           </div>
-        </div>
-        <div id="comments">
+        </div> */}
+        {/* <div id="comments">
           <div className="comments-wrap">
             <h3 className="single-post_heading blog_heading_border">
               Comments (4)
@@ -239,7 +239,7 @@ function PostDetailTags(props) {
               </form>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

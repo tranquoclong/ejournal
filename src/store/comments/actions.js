@@ -4,6 +4,7 @@ export const ACT_SET_COMMENTS_PARENT = 'ACT_SET_COMMENTS_PARENT';
 export const ACT_SET_COMMENTS_CHILD = 'ACT_SET_COMMENTS_CHILD';
 export const ACT_INIT_COMMENTS_CHILD = 'ACT_INIT_COMMENTS_CHILD';
 export const ACT_POST_COMMENT = 'ACT_POST_COMMENT';
+export const ACT_POST_FULL_TEXT = "ACT_POST_FULL_TEXT";
 export const ACT_ADD_NEW_PARENT_COMMENT = 'ACT_ADD_NEW_PARENT_COMMENT';
 export const ACT_ADD_NEW_CHILD_COMMENT = 'ACT_ADD_NEW_CHILD_COMMENT';
 
@@ -53,6 +54,13 @@ export const actInitCommentsChild = (commentsParent) => {
     }
   }
 }
+
+export const actFullText = (fullText) => {
+  return {
+    type: ACT_POST_FULL_TEXT,
+    payload: fullText,
+  };
+};
 
 export const actAddNewComment = ({
   newComment,
@@ -151,4 +159,13 @@ export function actPostCommentAsync({
       }
     }
   }
+}
+
+export function actFetchFullTextAsync({postId}) {
+  return async (dispatch) => {
+    try {
+      const response = await CommentsService.getPostFullText({ postId });
+      dispatch(actFullText(response.data[0]));
+    } catch (e) {}
+  };
 }

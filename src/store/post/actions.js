@@ -1,5 +1,5 @@
 import { PostService } from "../../services/post";
-import { actFetchCommentsAsync } from "../comments/actions";
+import { actFetchCommentsAsync, actFetchFullTextAsync } from "../comments/actions";
 
 export const ACT_FETCH_LATEST_POSTS = "ACT_FETCH_LATEST_POSTS";
 export const ACT_FETCH_POPULAR_POSTS = "ACT_FETCH_POPULAR_POSTS";
@@ -182,9 +182,8 @@ export function actFetchPostDetailAsync(slug) {
         })
       );
       dispatch(actFetchCommentsAsync({ postId }));
-
+      dispatch(actFetchFullTextAsync({ postId }));
       dispatch(actFetchPostDetail({ post }));
-
       return {
         ok: true,
         post,

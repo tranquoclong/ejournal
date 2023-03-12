@@ -1,5 +1,5 @@
 import { AuthService } from "../../services/auth";
-import { actGetMeAsync } from "../user/actions";
+import { actGetMe, actGetMeAsync } from "../user/actions";
 
 export const ACT_LOGIN = "ACT_LOGIN";
 export const ACT_SET_TOKEN = "ACT_SET_TOKEN";
@@ -54,8 +54,10 @@ export function actLoginAsync({ username, password }) {
         password,
       });
       const data = response.data;
-      const id = data.id;
-      dispatch(actGetMeAsync({ id }));
+      // const id = data.id;
+      // dispatch(actGetMeAsync({ id }));
+      dispatch(actGetMe(data));
+      localStorage.setItem("access_login", JSON.stringify(data));
       return {
         ok: true,
       };

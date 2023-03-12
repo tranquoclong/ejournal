@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import useForm from "../../../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
 import { validateAddPost } from "../../../../components/Validate/validateInput";
@@ -6,9 +6,13 @@ import { NotificationManager } from 'react-notifications';
 import { actPostArticleAsync } from "../../../../store/post/actions";
 import { useIsLogin } from "../../../../hooks/useIsLogin";
 import { actGetAllMajor } from "../../../../store/user/actions";
+import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
 function AddPost() {
   const dispatch = useDispatch();
-  const { currentUser } = useIsLogin();
+    const { currentUser } = useIsLogin();
+    const dropdownRef = useRef(null);
+    const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
+    const onClick = () => setIsActive(!isActive);
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validateAddPost
@@ -108,12 +112,70 @@ function AddPost() {
                       value={values.majorid || ""}
                       required
                     >
-                      {allMajor &&allMajor.map((major, index) => (
-                        <option value={major.id} key={index}>
-                          {major.name}
-                        </option>
-                      ))}
+                      {allMajor &&
+                        allMajor.map((major, index) => (
+                          <option value={major.id} key={index}>
+                            {major.name}
+                          </option>
+                        ))}
                     </select>
+                  </div>
+                  <div className="col-md-6" style={{ color: "lightcoral" }}>
+                    <label>Thêm tác giả</label>
+                    <div
+                      ref={dropdownRef}
+                      className={`dropdown ${isActive && "open"}`}
+                      style={{
+                        borderRadius: "10px",
+                        padding: "10px 25px",
+                        border: "2px solid #666",
+                        height: "42px",
+                      }}
+                      onClick={onClick}
+                    >
+                      <div
+                        className="dropdown-menu"
+                        style={{
+                          width: "100%",
+                          maxWidth: "inherit",
+                          padding: "15px !important",
+                        }}
+                      >
+                        <div className="row with-forms">
+                          <div
+                            className="col-md-6"
+                            style={{ color: "lightcoral" }}
+                          >
+                            <label>Tóm tắc</label>
+                            <input
+                              type="text"
+                              name="summary"
+                              placeholder="tóm tắc ..."
+                              onChange={handleChange}
+                              value={values.summary || ""}
+                              required
+                            />
+                          </div>
+                          <div
+                            className="col-md-6"
+                            style={{ color: "lightcoral" }}
+                          >
+                            <label>Tóm tắc</label>
+                            <input
+                              type="text"
+                              name="summary"
+                              placeholder="tóm tắc ..."
+                              onChange={handleChange}
+                              value={values.summary || ""}
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6" style={{ color: "lightcoral" }}>
+                    <label>Tác giả hổ trợ</label>
                   </div>
                 </div>
               </div>

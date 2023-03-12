@@ -1066,7 +1066,7 @@ span.featured-label {
 
   #mt_banner.innerbanner,
   .tag #mt_banner.innerbanner {
-    background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+    background: linear-gradient(144deg, #444, #555 50%, #666);
     padding: 20px;
     height: auto !important;
   }
@@ -1427,7 +1427,7 @@ section#mt_blog .blog_post_sec.fullwidth {
 }
 
 .widget-title {
-  background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  background: linear-gradient(144deg,#444, #555 50%, #666);
   padding: 12px 15px;
 }
 
@@ -1439,7 +1439,7 @@ section#mt_blog .blog_post_sec.fullwidth {
 
 .widget.widget-author:before {
   content: "";
-  background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  background: linear-gradient(144deg,#444, #555 50%, #666);
   height: 22%;
   width: 100%;
   position: absolute;

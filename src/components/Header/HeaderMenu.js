@@ -43,12 +43,12 @@ export default function HeaderMenu() {
         <li className="user">
           {isLogin ? (
             <>
-              <Link to="/dashboard">
+              <Link to="/dashboard/profile">
                 <UserOutlined /> {currentUser.username}
               </Link>
               <ul>
                 <li style={{ marginTop: "15px" }}>
-                  <Link to="/dashboard">
+                  <Link to="/dashboard/profile">
                     <AppstoreAddOutlined /> Quản lý
                   </Link>
                   <Link to="#" onClick={handleLogout}>

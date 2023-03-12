@@ -1,10 +1,11 @@
-import { 
-  ACT_INIT_COMMENTS_CHILD, 
-  ACT_SET_COMMENTS_PARENT, 
+import {
+  ACT_INIT_COMMENTS_CHILD,
+  ACT_SET_COMMENTS_PARENT,
   ACT_SET_COMMENTS_CHILD,
   ACT_ADD_NEW_PARENT_COMMENT,
   ACT_ADD_NEW_CHILD_COMMENT,
-} from './actions';
+  ACT_POST_FULL_TEXT,
+} from "./actions";
 
 import {
   ACT_RESET_DATA_DETAIL
@@ -17,7 +18,8 @@ const initState = {
     totalPage: 0,
     per_page: 2
   },
-  hashCommentsByParentById: {}
+  hashCommentsByParentById: {},
+  fullText: {},
 }
 
 function getDefaultCmtPaging() {
@@ -38,33 +40,39 @@ export default function commentsReducer(state = initState, action) {
           list: [],
           currentPage: 1,
           totalPage: 1,
-          per_page: 2
+          per_page: 2,
         },
-        hashCommentsByParentById: {}
-      }
+        hashCommentsByParentById: {},
+      };
+    case ACT_POST_FULL_TEXT:
+      return {
+        ...state,
+        fullText: action.payload,
+      };
     case ACT_SET_COMMENTS_PARENT:
       return {
         ...state,
         commentsParentPaging: {
-          list: action.payload.page === 1 
-            ? action.payload.comments 
-            : [
-              ...state.commentsParentPaging.list,
-              ...action.payload.comments
-            ],
+          list:
+            action.payload.page === 1
+              ? action.payload.comments
+              : [
+                  ...state.commentsParentPaging.list,
+                  ...action.payload.comments,
+                ],
           currentPage: action.payload.page,
           totalPage: action.payload.totalPages,
-          per_page: action.payload.per_page
-        }
-      }
+          per_page: action.payload.per_page,
+        },
+      };
 
     case ACT_SET_COMMENTS_CHILD:
-      const key = 'parent-' + action.payload.parentId;
+      const key = "parent-" + action.payload.parentId;
       let arr = [];
       const oldCmt = state.hashCommentsByParentById[key];
 
       if (oldCmt.currentPage === 0 && oldCmt.list.length > 0) {
-        arr = oldCmt.list
+        arr = oldCmt.list;
       }
 
       return {
@@ -73,40 +81,36 @@ export default function commentsReducer(state = initState, action) {
           ...state.hashCommentsByParentById,
           [key]: {
             ...state.hashCommentsByParentById[key],
-            list: action.payload.page === 1 
-              ? [
-                ...arr,
-                ...action.payload.comments
-              ]
-              : [
-                ...state.hashCommentsByParentById[key].list,
-                ...action.payload.comments
-              ],
+            list:
+              action.payload.page === 1
+                ? [...arr, ...action.payload.comments]
+                : [
+                    ...state.hashCommentsByParentById[key].list,
+                    ...action.payload.comments,
+                  ],
             currentPage: action.payload.page,
             totalPage: action.payload.totalPages,
-            per_page: action.payload.per_page
-          }
-        }
-      }
+            per_page: action.payload.per_page,
+          },
+        },
+      };
 
     case ACT_INIT_COMMENTS_CHILD:
-
       const hashCommentsByParentById = state.hashCommentsByParentById;
-      action.payload.commentsParent.forEach(cmtParent => {
-        const key = 'parent-' + cmtParent.id;
+      action.payload.commentsParent.forEach((cmtParent) => {
+        const key = "parent-" + cmtParent.id;
 
         if (!state.hashCommentsByParentById[key]) {
           const value = getDefaultCmtPaging();
           hashCommentsByParentById[key] = value;
         }
-
-      })
+      });
 
       return {
         ...state,
-        hashCommentsByParentById
+        hashCommentsByParentById,
       };
-    
+
     case ACT_ADD_NEW_PARENT_COMMENT:
       const newComment = action.payload.newComment;
 
@@ -114,23 +118,20 @@ export default function commentsReducer(state = initState, action) {
         ...state,
         commentsParentPaging: {
           ...state.commentsParentPaging,
-          list: [
-            ...state.commentsParentPaging.list,
-            newComment
-          ]
+          list: [...state.commentsParentPaging.list, newComment],
         },
         hashCommentsByParentById: {
           ...state.hashCommentsByParentById,
-          [`parent-` + newComment.id]: getDefaultCmtPaging()
-        }
-      }
+          [`parent-` + newComment.id]: getDefaultCmtPaging(),
+        },
+      };
     case ACT_ADD_NEW_CHILD_COMMENT:
       const newChildCmt = action.payload.newComment;
       const parentCmtId = action.payload.parentId;
-      const parentKey = 'parent-' + parentCmtId;
+      const parentKey = "parent-" + parentCmtId;
 
       if (!state.hashCommentsByParentById[parentKey]) {
-        return state
+        return state;
       }
 
       return {
@@ -141,12 +142,12 @@ export default function commentsReducer(state = initState, action) {
             ...state.hashCommentsByParentById[parentKey],
             list: [
               ...state.hashCommentsByParentById[parentKey].list,
-              newChildCmt
-            ]
-          }
-        }
-      }
-      
+              newChildCmt,
+            ],
+          },
+        },
+      };
+
     default:
       return state;
   }

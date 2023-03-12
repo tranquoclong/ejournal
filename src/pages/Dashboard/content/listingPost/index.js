@@ -37,36 +37,6 @@ function ListingPost() {
                         </div>
                       );
                     })}
-                    <div className="col-xs-12">
-                      <div className="pagination__wrapper">
-                        <ul className="pagination">
-                          <li>
-                            <button className="prev" title="previous page">
-                              ❮
-                            </button>
-                          </li>
-                          <li>
-                            <button title="first page - page 1">1</button>
-                          </li>
-                          <li>
-                            <button className="active" title="current page">
-                              2
-                            </button>
-                          </li>
-                          <li>
-                            <button>3</button>
-                          </li>
-                          <li>
-                            <button>4</button>
-                          </li>
-                          <li>
-                            <button className="next" title="next page">
-                              ❯
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
                   </>
                 ) : (
                   "không tìm thấy"

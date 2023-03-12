@@ -40,8 +40,7 @@ function PostDetailTags(props) {
             <Link
               to="/"
               style={{
-                background:
-                  "linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb)",
+                background: "linear-gradient(144deg, #555, #666 50%, #777)",
               }}
             >
               Tags:

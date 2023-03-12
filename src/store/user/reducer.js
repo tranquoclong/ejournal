@@ -1,10 +1,20 @@
-import { ACT_ALL_USER, ACT_ALL_UNIVERSITY, ACT_ALL_MAJOR,ACT_GET_ROLE, ACT_DETAIL_USER } from "./actions";
+import {
+  ACT_ALL_USER,
+  ACT_ALL_UNIVERSITY,
+  ACT_ALL_LIST_REVIEWERS,
+  ACT_ALL_MAJOR,
+  ACT_GET_ROLE,
+  ACT_DETAIL_USER,
+  ACT_GET_REVIEW,
+} from "./actions";
 const initUserState = {
   allUser: null,
   detailUser: null,
   role: null,
   allUniversity: null,
   allMajor: null,
+  listreviewers: null,
+  allReview:null,
 };
 
 export default function reducer(state = initUserState, action) {
@@ -13,6 +23,16 @@ export default function reducer(state = initUserState, action) {
       return {
         ...state,
         allUser: action.payload.allUser,
+      };
+    case ACT_ALL_LIST_REVIEWERS:
+      return {
+        ...state,
+        listreviewers: action.payload.listreviewers,
+      };
+    case ACT_GET_REVIEW:
+      return {
+        ...state,
+        allReview: action.payload.allReview,
       };
     case ACT_DETAIL_USER:
       return {

@@ -10,8 +10,14 @@ export const UserService = {
   getAllRole() {
     return api.callWithAuth().get("/admin/role/");
   },
+  getAllReview() {
+    return api.callWithAuth().get("/review/pending/");
+  },
   getAllUniversity() {
     return api.callWithAuth().get("/university/");
+  },
+  getListreviewers() {
+    return api.callWithAuth().get("/review/listreviewers/");
   },
   putUniversity({ name, email, mailtype }) {
     return api
@@ -20,6 +26,12 @@ export const UserService = {
   },
   postUpdateAccount(id, roleId) {
     return api.callWithAuth().put("/account/update/", { id, roleid: roleId });
+  },
+  postAssignReview(id, roleId) {
+    return api.callWithAuth().post("/review/assign/", {
+      articleid: id.toString(),
+      reviewerid: roleId,
+    });
   },
   activeUniversity({ id }) {
     return api.callWithAuth().put("/university/active/", { id });
@@ -48,16 +60,23 @@ export const UserService = {
     return api.callWithAuth().put("/major/update/", { name });
   },
   changePassword({ oldPassword, newPassword }) {
-    return api.callWithAuth().put("profile/changepassword/", {
+    return api.callWithAuth().put("/profile/changepassword/", {
       oldPassword,
       newPassword,
     });
   },
   changeProfile(formData) {
-    return api.callWithAuth().put("profile/update/", formData);
+    return api.callWithAuth().put("/profile/update/", formData);
+  },
+  submitReview(formData, articleid) {
+    return api.callWithAuth().put("/review/submit/", {
+      id: articleid,
+      content: formData.content,
+      suggest: formData.suggest,
+    });
   },
   profile() {
-    return api.callWithAuth().get("profile/");
+    return api.callWithAuth().get("/profile/");
   },
   activeUser({ id }) {
     return api.callWithAuth().put("/account/active/", { id });

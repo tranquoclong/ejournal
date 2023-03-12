@@ -1,40 +1,53 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useForm from "../../../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
 import { validateAddPost } from "../../../../components/Validate/validateInput";
-import { NotificationManager } from 'react-notifications';
+import { NotificationManager } from "react-notifications";
 import { actPostArticleAsync } from "../../../../store/post/actions";
 import { useIsLogin } from "../../../../hooks/useIsLogin";
 import { actGetAllMajor } from "../../../../store/user/actions";
 import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
 function AddPost() {
   const dispatch = useDispatch();
-    const { currentUser } = useIsLogin();
-    const dropdownRef = useRef(null);
-    const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
-    const onClick = () => setIsActive(!isActive);
-  const { values, errors, handleChange, handleSubmit } = useForm(
-    login,
-    validateAddPost
-  );
-  const allMajor = useSelector((state) => state.User.allMajor);
-    useEffect(
-      () => {
-        dispatch(actGetAllMajor());
-      },
-      // eslint-disable-next-line
-      []
-    );
-  function login() {
-    values.authorlist = [
+  const { currentUser } = useIsLogin();
+  const dropdownRef = useRef(null);
+  const [authorlist, setAuthorlist] = useState([
       {
         fullname: currentUser.fullname,
         email: currentUser.email,
         iscorresponding: true,
       },
-    ];
+    ]);
+  const [author, setAuthor] = useState({
+    fullname: "",
+    email: "",
+    iscorresponding: false,
+  });
+  const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
+  const onClick = () => setIsActive(!isActive);
+  const { values, errors, handleChange, handleSubmit } = useForm(
+    login,
+    validateAddPost
+  );
+  const onAdd= () => {
+    setAuthorlist([...[author],...authorlist])
+    setAuthor({
+    fullname: "",
+    email: "",
+    iscorresponding: false,
+  })
+  }
+  const allMajor = useSelector((state) => state.User.allMajor);
+  useEffect(
+    () => {
+      dispatch(actGetAllMajor());
+    },
+    // eslint-disable-next-line
+    []
+  );
+  function login() {
     values.openaccess = values.openaccess === true;
-    dispatch(actPostArticleAsync(values)).then((res) => {
+    dispatch(actPostArticleAsync({ ...values, authorlist })).then((res) => {
       if (res.ok) {
         NotificationManager.success("Cập nhật thành công");
       } else {
@@ -42,6 +55,15 @@ function AddPost() {
       }
     });
   }
+  function handleChanges(key) {
+    return (evt) => {
+      setAuthor({
+        ...author,
+        [key]: evt.target.value,
+      });
+    };
+  }
+
   return (
     <div className="dashboard-content">
       <div className="row">
@@ -132,50 +154,95 @@ function AddPost() {
                         height: "42px",
                       }}
                       onClick={onClick}
+                    ></div>
+                    <div
+                      ref={dropdownRef}
+                      className={`dropdown ${isActive && "open"}`}
                     >
                       <div
                         className="dropdown-menu"
                         style={{
                           width: "100%",
                           maxWidth: "inherit",
-                          padding: "15px !important",
                         }}
                       >
-                        <div className="row with-forms">
+                        <div
+                          className="row with-forms"
+                          style={{
+                            padding: "0 20px",
+                          }}
+                        >
                           <div
                             className="col-md-6"
                             style={{ color: "lightcoral" }}
                           >
-                            <label>Tóm tắc</label>
+                            <label>Tên</label>
                             <input
                               type="text"
-                              name="summary"
-                              placeholder="tóm tắc ..."
-                              onChange={handleChange}
-                              value={values.summary || ""}
-                              required
+                              name="fullname"
+                              placeholder="fullname ..."
+                              onChange={handleChanges("fullname")}
+                              value={author.fullname}
                             />
                           </div>
                           <div
                             className="col-md-6"
                             style={{ color: "lightcoral" }}
                           >
-                            <label>Tóm tắc</label>
+                            <label>Email</label>
                             <input
                               type="text"
-                              name="summary"
-                              placeholder="tóm tắc ..."
-                              onChange={handleChange}
-                              value={values.summary || ""}
-                              required
+                              name="email"
+                              placeholder="email ..."
+                              onChange={handleChanges("email")}
+                              value={author.email}
                             />
+                          </div>
+                        </div>
+                        <div
+                          className="row with-forms"
+                          style={{
+                            padding: "0 20px",
+                          }}
+                        >
+                          <div
+                            className="col-md-6"
+                            style={{ color: "lightcoral" }}
+                          >
+                            <button className="button preview" onClick={onAdd}>
+                              Thêm tác giả
+                            </button>
+                          </div>
+                          <div
+                            className="col-md-6"
+                            style={{ color: "lightcoral" }}
+                          >
+                            <label>Được chỉnh sửa</label>
+                            <select
+                              className="chosen-select-no-single"
+                              style={{
+                                background: "rgb(53, 54, 58)",
+                                color: "#ddd",
+                              }}
+                              name="iscorresponding"
+                              onChange={handleChanges("iscorresponding")}
+                              value={author.iscorresponding}
+                            >
+                              <option value={true}>có</option>
+                              <option value={false}>không</option>
+                            </select>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="col-md-6" style={{ color: "lightcoral" }}>
-                    <label>Tác giả hổ trợ</label>
+                    <label>Tác giả hổ trợ</label><br/>
+                    {authorlist.map((u, i) => (
+                      <label key={i} style={{marginRight:"10px"}}>
+                        {u.email} |
+                      </label>
+                    ))}
                   </div>
                 </div>
               </div>

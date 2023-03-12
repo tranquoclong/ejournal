@@ -22,6 +22,7 @@ import University from "./content/university";
 import { NotificationContainer } from 'react-notifications';
 import { useIsLogin } from "../../hooks/useIsLogin";
 import ListPost from "./content/listPost";
+import Review from "./content/review";
 
 export default function Dashboard() {
   // useAuthenticated();
@@ -71,14 +72,16 @@ export default function Dashboard() {
       icon: <BarsOutlined />,
       href: "/dashboard/postList",
       exact: false,
-      role: [
-        "EDITOR_IN_CHIEF",
-        "EDITOR",
-        "REVIEWER",
-        "AUTHOR",
-        "MEMBER",
-      ],
+      role: ["EDITOR_IN_CHIEF", "EDITOR", "REVIEWER", "AUTHOR", "MEMBER"],
       Component: ListPost,
+    },
+    {
+      title: "Danh sách REVIEW",
+      icon: <BarsOutlined />,
+      href: "/dashboard/review",
+      exact: false,
+      role: ["REVIEWER"],
+      Component: Review,
     },
     {
       title: "Trường Học",

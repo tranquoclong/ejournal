@@ -55,13 +55,8 @@ export default function ArticleItem({
         )}
       </div>
       <div className="post-content" style={{ width: "100%", height: "100%" }}>
-        {isShowCategories && (
-          <ArticleItemCategories categoriesId={categoriesId} />
-        )}
-        <ArticleItemStats viewCount={viewCount} id={id} isEditor={isEditor} />
-
         <ArticleItemTitle title={title} slugLink={slugLink} />
-
+        <ArticleItemStats viewCount={viewCount} id={id} isEditor={isEditor} />
         {isShowDesc && <ArticleItemDesc shortDesc={shortDesc} />}
         <ArticleItemInfor
           created={created}
@@ -70,6 +65,9 @@ export default function ArticleItem({
           authorLink={authorLink}
           authorAvatar={authorAvatar}
         />
+        {isShowCategories && (
+          <ArticleItemCategories categoriesId={categoriesId} />
+        )}
       </div>
     </article>
   );

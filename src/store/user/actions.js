@@ -1,12 +1,15 @@
 import { UserService } from "../../services/user";
+import { actFetchManus } from "../post/actions";
 // import { actSetToken } from "../auth/actions";
 
 export const ACT_GET_ME = "ACT_GET_ME";
 export const ACT_GET_ROLE = "ACT_GET_ROLE";
 export const ACT_ALL_USER = "ACT_ALL_USER";
 export const ACT_ALL_UNIVERSITY = "ACT_ALL_UNIVERSITY";
+export const ACT_ALL_LIST_REVIEWERS = "ACT_ALL_LIST_REVIEWERS";
 export const ACT_ALL_MAJOR = "ACT_ALL_MAJOR";
 export const ACT_CHANGE_PASSWORD = "ACT_CHANGE_PASSWORD";
+export const ACT_GET_REVIEW = "ACT_GET_REVIEW";
 export const ACT_DETAIL_USER = "ACT_DETAIL_USER";
 export function actGetMe(currentUser) {
   return {
@@ -22,7 +25,12 @@ export function actGetRole(role) {
     payload: { role },
   };
 }
-
+export function actGetAllReview(allReview) {
+  return {
+    type: ACT_GET_REVIEW,
+    payload: { allReview },
+  };
+}
 export function actAllUser(allUser) {
   return {
     type: ACT_ALL_USER,
@@ -40,6 +48,15 @@ export function actAllUniversity(allUniversity) {
     },
   };
 }
+export function actListreviewers(listreviewers) {
+  return {
+    type: ACT_ALL_LIST_REVIEWERS,
+    payload: {
+      listreviewers,
+    },
+  };
+}
+
 
 export function actAllMajor(allMajor) {
   return {
@@ -117,6 +134,18 @@ export function actGetAllAsync() {
     }
   };
 }
+
+export function actGetAllReviewAsync() {
+  return async (dispatch) => {
+    try {
+      const response = await UserService.getAllReview();
+      dispatch(actGetAllReview(response.data.list));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
 export function actGetAllRoleAsync() {
   return async (dispatch) => {
     try {
@@ -132,6 +161,16 @@ export function actGetAllUniversity() {
     try {
       const response = await UserService.getAllUniversity();
       dispatch(actAllUniversity(response.data.list));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+export function actGetListreviewers() {
+  return async (dispatch) => {
+    try {
+      const response = await UserService.getListreviewers();
+      dispatch(actListreviewers(response.data.list));
     } catch (e) {
       console.log(e);
     }
@@ -365,6 +404,23 @@ export function actChangeProfileAsync(formData,id) {
   };
 }
 
+export function actSubmitReviewAsync(formData, articleid) {
+  return async (dispatch) => {
+    try {
+      await UserService.submitReview(formData, articleid);
+      // dispatch(actGetMeAsync({ id }));
+      return {
+        ok: true,
+      };
+    } catch (err) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+
 
 export function actActiveAccountAsync(id, allUser) {
   return async (dispatch) => {
@@ -431,6 +487,23 @@ export function actUpdateAccountAsync(id, roleId) {
   return async (dispatch) => {
     try {
       await UserService.postUpdateAccount(id, roleId);
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actAssignReviewAsync(id, roleId, manuscript) {
+  return async (dispatch) => {
+    try {
+      await UserService.postAssignReview(id, roleId);
+      const response = manuscript.filter((m) => m.id !== id);
+      dispatch(actFetchManus(response));
       return {
         ok: true,
       };

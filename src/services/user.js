@@ -70,7 +70,7 @@ export const UserService = {
   },
   submitReview(formData, articleid) {
     return api.callWithAuth().put("/review/submit/", {
-      id: articleid,
+      articleid,
       content: formData.content,
       suggest: formData.suggest,
     });

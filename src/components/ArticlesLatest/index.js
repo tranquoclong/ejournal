@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Skeleton } from "antd";
-import { posts } from "../../data";
+// import { posts } from "../../data";
 export default function ArticlesLatest() {
   // const posts = useSelector((state) => state.Post.articlesLatest);
   const loadingLatestStatus = useSelector(
@@ -43,7 +43,8 @@ export default function ArticlesLatest() {
     autoplay: true,
     autoplaySpeed: 2500,
   };
-  
+  const articles = useSelector((state) => state.Post.articles);
+  console.log("🚀 ~ file: index.js:47 ~ ArticlesLatest ~ articles:", articles)
   return (
     <Slider {...settings}>
       {loadingLatestStatus === "loading" &&
@@ -62,9 +63,10 @@ export default function ArticlesLatest() {
             </section>
           );
         })}
-      {posts.map((post) => {
-        return <ArticleItemHed post={post} />;
-      })}
+      {articles &&
+        articles.slice(0, 6).map((post) => {
+          return <ArticleItemHed post={post} />;
+        })}
     </Slider>
   );
 }

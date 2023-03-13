@@ -103,9 +103,8 @@ function AddPost() {
                       value={values.openaccess || ""}
                       required
                     >
-                      <option>Ai có thể truy cập</option>
-                      <option value={true}>Mọi người</option>
                       <option value={false}>Chỉ mình tôi</option>
+                      <option value={true}>Mọi người</option>
                     </select>
                   </div>
                   <div className="col-md-6" style={{ color: "lightcoral" }}>
@@ -237,9 +236,10 @@ function AddPost() {
                     </div>
                   </div>
                   <div className="col-md-6" style={{ color: "lightcoral" }}>
-                    <label>Tác giả hổ trợ</label><br/>
+                    <label>Tác giả hổ trợ</label>
+                    <br />
                     {authorlist.map((u, i) => (
-                      <label key={i} style={{marginRight:"10px"}}>
+                      <label key={i} style={{ marginRight: "10px" }}>
                         {u.email} |
                       </label>
                     ))}

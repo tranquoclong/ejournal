@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { NotificationManager } from "react-notifications";
 import { useDispatch, useSelector } from 'react-redux';
-import { actChangeProfileAsync, actGetAllReviewAsync, actSubmitReviewAsync } from '../../../../store/user/actions';
+import { Link } from 'react-router-dom';
+import {  actGetAllReviewAsync, actSubmitReviewAsync } from '../../../../store/user/actions';
 function Review() {
       const dispatch = useDispatch();
     const [formData, setFormData] = useState({});
@@ -88,7 +89,10 @@ function Review() {
                               <h4>{user.title}</h4>
                               <span>{user.majorname}</span>
                             </div>
-                            <div className="user-btns">
+                            <div className="user-btns" style={{alignItems: "center",display: "flex"}}>
+                              <Link to={`/post/${user.id}`} className="button">
+                                View
+                              </Link>
                               <button
                                 className="button"
                                 onClick={() => setArticleid(user.id)}

@@ -56,7 +56,7 @@ export default function Dashboard() {
       icon: <PlusCircleOutlined />,
       href: "/dashboard/addPost",
       exact: false,
-      role: ["AUTHOR"],
+      role: ["AUTHOR", "MEMBER"],
       Component: AddPost,
     },
     {

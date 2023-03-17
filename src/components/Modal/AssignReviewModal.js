@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { CLOSE_MODAL } from "../../store/modal/actions";
 import { NotificationManager } from "react-notifications";
-import { actAssignReviewAsync, actGetListreviewers } from "../../store/user/actions";
+import { actGetListreviewers } from "../../store/user/actions";
+import { actAssignReviewAsync } from "../../store/post/actions";
 
 export const ModalFooter = styled.div`
   display: flex;
@@ -64,9 +65,9 @@ const AssignReviewModal = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [roleId, setRoleId] = useState("0");
   const dispatch = useDispatch();
-    const listreviewers = useSelector((state) => state.User.listreviewers);
-   const manuscript = useSelector((state) => state.Post.manuscript);
-    useEffect(
+  const listreviewers = useSelector((state) => state.User.listreviewers);
+  const manuscript = useSelector((state) => state.Post.manuscript);
+  useEffect(
     () => {
       dispatch(actGetListreviewers());
     },
@@ -75,15 +76,17 @@ const AssignReviewModal = ({ id }) => {
   );
   const onSubmit = () => {
     setIsLoading(true);
-    dispatch(actAssignReviewAsync(id, roleId, manuscript)).then((res) => {
-      if (res.ok) {
-        NotificationManager.success("Cập nhật thành công");
-      } else {
-        NotificationManager.error("Cập nhật thất bại");
+    dispatch(actAssignReviewAsync(id, roleId, manuscript)).then(
+      (res) => {
+        if (res.ok) {
+          NotificationManager.success("Cập nhật thành công");
+        } else {
+          NotificationManager.error("Cập nhật thất bại");
+        }
+        closeModal();
+        setIsLoading(false);
       }
-      closeModal();
-      setIsLoading(false);
-    });
+    );
   };
 
   const closeModal = () => {
@@ -140,7 +143,7 @@ const AssignReviewModal = ({ id }) => {
           }}
           onChange={(e) => setRoleId(e.target.value)}
         >
-          <option>reviewer</option>
+          <option>Phân công</option>
           {listreviewers &&
             listreviewers.map((reviewer, i) => (
               <option value={reviewer.id} key={i}>

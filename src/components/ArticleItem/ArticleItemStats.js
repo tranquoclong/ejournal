@@ -30,11 +30,13 @@ export default function ArticleItemStats({ viewCount, id, isEditor }) {
               Cấp Quyền
             </span>
           </li>
-          <li className="cat-pink">
-            <span className="text" onClick={() => onModals()}>
-              phân công đánh giá
-            </span>
-          </li>
+          {viewCount !== "PENDING" && (
+            <li className="cat-pink">
+              <span className="text" onClick={() => onModals()}>
+                phân công đánh giá
+              </span>
+            </li>
+          )}
         </>
       )}
     </ul>

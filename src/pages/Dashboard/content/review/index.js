@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import {  actGetAllReviewAsync, actSubmitReviewAsync } from '../../../../store/user/actions';
 function Review() {
       const dispatch = useDispatch();
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({ content: "", suggest :true});
     const [articleid, setArticleid] = useState("");
       const [isLoading, setIsLoading] = useState(false);
         const { allReview } = useSelector((state) => state.User);
@@ -30,14 +30,18 @@ function Review() {
             return;
           }
           setIsLoading(true);
-          dispatch(actSubmitReviewAsync(formData, articleid)).then((res) => {
-            if (res.ok) {
-              NotificationManager.success("đổi thông tin thành công");
-            } else {
-              NotificationManager.error("đổi thông tin thất bại");
+          dispatch(actSubmitReviewAsync(formData, articleid, allReview)).then(
+            (res) => {
+              if (res.ok) {
+                NotificationManager.success("đổi thông tin thành công");
+                setArticleid("");
+                setFormData({ content: "", suggest: true });
+              } else {
+                NotificationManager.error("đổi thông tin thất bại");
+              }
+              setIsLoading(false);
             }
-            setIsLoading(false);
-          });
+          );
         }
   return (
     <div className="dashboard-content">

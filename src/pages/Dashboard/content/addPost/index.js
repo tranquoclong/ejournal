@@ -7,6 +7,11 @@ import { actPostArticleAsync } from "../../../../store/post/actions";
 import { useIsLogin } from "../../../../hooks/useIsLogin";
 import { actGetAllMajor } from "../../../../store/user/actions";
 import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
+import { Editor } from "react-draft-wysiwyg";
+import { convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import "../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "./addPost.css"
 function AddPost() {
   const dispatch = useDispatch();
   const { currentUser } = useIsLogin();
@@ -23,6 +28,12 @@ function AddPost() {
     email: "",
     iscorresponding: false,
   });
+  const [content, setContent] = useState("");
+   const [editorState, setEditorState] = useState();
+    const onEditorStateChange = (state) => {
+      setEditorState(state);
+      setContent(draftToHtml(convertToRaw(state.getCurrentContent())));
+    };
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
   const onClick = () => setIsActive(!isActive);
   const { values, errors, handleChange, handleSubmit } = useForm(
@@ -47,13 +58,15 @@ function AddPost() {
   );
   function login() {
     values.openaccess = values.openaccess === true;
-    dispatch(actPostArticleAsync({ ...values, authorlist })).then((res) => {
-      if (res.ok) {
-        NotificationManager.success("Cập nhật thành công");
-      } else {
-        NotificationManager.error("Cập nhật thất bại");
+    dispatch(actPostArticleAsync({ ...values, content, authorlist })).then(
+      (res) => {
+        if (res.ok) {
+          NotificationManager.success("Cập nhật thành công");
+        } else {
+          NotificationManager.error("Cập nhật thất bại");
+        }
       }
-    });
+    );
   }
   function handleChanges(key) {
     return (evt) => {
@@ -100,11 +113,11 @@ function AddPost() {
                       }}
                       name="openaccess"
                       onChange={handleChange}
-                      value={values.openaccess || ""}
+                      value={values.openaccess || false}
                       required
                     >
-                      <option value={false}>Chỉ mình tôi</option>
-                      <option value={true}>Mọi người</option>
+                      <option value={false}>Hạn Chế</option>
+                      <option value={true}>Công Khai</option>
                     </select>
                   </div>
                   <div className="col-md-6" style={{ color: "lightcoral" }}>
@@ -246,10 +259,31 @@ function AddPost() {
                   </div>
                 </div>
               </div>
-              <div className="form" style={{ color: "lightcoral" }}>
+              <div className="form" style={{ color: "lightcoral",height: "43vh" }}>
                 <label>Nội dung</label>
                 {errors.content ? ` * ${errors.content}` : ""}
-                <textarea
+                <Editor
+                  editorState={editorState}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName="editorClassName"
+                  onEditorStateChange={onEditorStateChange}
+                  toolbar={{
+                    options: [
+                      "inline",
+                      "blockType",
+                      "fontSize",
+                      "fontFamily",
+                      "list",
+                      "textAlign",
+                      "colorPicker",
+                      "emoji",
+                      "remove",
+                      "history",
+                    ],
+                  }}
+                />
+                {/* <textarea
                   className="WYSIWYG"
                   name="content"
                   placeholder="nội dung ..."
@@ -257,7 +291,7 @@ function AddPost() {
                   value={values.content || ""}
                   required
                   style={{ marginBottom: "0px", color: "#fff" }}
-                />
+                /> */}
               </div>
             </div>
             <button className="button preview">Đăng Bài Viết</button>

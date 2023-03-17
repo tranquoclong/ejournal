@@ -1,0 +1,23 @@
+.rdw-editor-toolbar.toolbarClassName {
+    border: 2px solid rgb(102, 102, 102);
+    border-radius: 10px;
+    background: transparent;
+}
+.rdw-option-wrapper {
+    background: rgb(102, 102, 102);
+}
+.rdw-dropdown-wrapper{
+    background: rgb(102, 102, 102);
+}
+.rdw-option-wrapper img{
+    filter: brightness(0) invert(1);
+    -webkit-filter: brightness(0) invert(1);
+
+}
+.editorClassName.rdw-editor-main {
+    border: 2px solid rgb(102, 102, 102);
+    border-radius: 10px;
+    color: white;
+    height: 30vh;
+    padding: 0 15px;
+}

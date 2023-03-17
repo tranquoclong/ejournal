@@ -7,6 +7,7 @@ export const ACT_POST_COMMENT = 'ACT_POST_COMMENT';
 export const ACT_POST_FULL_TEXT = "ACT_POST_FULL_TEXT";
 export const ACT_ADD_NEW_PARENT_COMMENT = 'ACT_ADD_NEW_PARENT_COMMENT';
 export const ACT_ADD_NEW_CHILD_COMMENT = 'ACT_ADD_NEW_CHILD_COMMENT';
+export const ACT_POST_FULL_TEXT_FILE = "ACT_POST_FULL_TEXT_FILE";
 
 export const actPostComment = ({
   userId,
@@ -59,6 +60,12 @@ export const actFullText = (fullText) => {
   return {
     type: ACT_POST_FULL_TEXT,
     payload: fullText,
+  };
+};
+export const actFullTextFile = (fullTextFile) => {
+  return {
+    type: ACT_POST_FULL_TEXT_FILE,
+    payload: fullTextFile,
   };
 };
 
@@ -166,6 +173,14 @@ export function actFetchFullTextAsync({postId}) {
     try {
       const response = await CommentsService.getPostFullText({ postId });
       dispatch(actFullText(response.data[0]));
+    } catch (e) {}
+  };
+}
+export function actFetchFullTextFileAsync({ postId }) {
+  return async (dispatch) => {
+    try {
+      const response = await CommentsService.getPostFullTextFile({ postId });
+      dispatch(actFullTextFile(response.data[0]));
     } catch (e) {}
   };
 }

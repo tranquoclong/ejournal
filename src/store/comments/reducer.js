@@ -5,6 +5,7 @@ import {
   ACT_ADD_NEW_PARENT_COMMENT,
   ACT_ADD_NEW_CHILD_COMMENT,
   ACT_POST_FULL_TEXT,
+  ACT_POST_FULL_TEXT_FILE,
 } from "./actions";
 
 import {
@@ -16,11 +17,12 @@ const initState = {
     list: [],
     currentPage: 0,
     totalPage: 0,
-    per_page: 2
+    per_page: 2,
   },
   hashCommentsByParentById: {},
   fullText: {},
-}
+  fullTextFile:{},
+};
 
 function getDefaultCmtPaging() {
   return {
@@ -48,6 +50,11 @@ export default function commentsReducer(state = initState, action) {
       return {
         ...state,
         fullText: action.payload,
+      };
+    case ACT_POST_FULL_TEXT_FILE:
+      return {
+        ...state,
+        fullTextFile: action.payload,
       };
     case ACT_SET_COMMENTS_PARENT:
       return {

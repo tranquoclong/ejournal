@@ -12,8 +12,5 @@ export function validateAddPost(values) {
   if (!values.majorid) {
     errors.majorid = "majorid is required";
   }
-  if (!values.content) {
-    errors.content = "content is required";
-  }
   return errors;
 }

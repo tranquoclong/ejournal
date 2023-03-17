@@ -54,20 +54,23 @@ export default function ArticleItem({
           <ArticleItemCategories categoriesId={categoriesId} />
         )}
       </div>
-      <div className="post-content" style={{ width: "100%", height: "100%" }}>
-        <ArticleItemTitle title={title} slugLink={slugLink} />
+
+      <div className="post-content" style={{ width: "100%", height: "100%",display: "flex",alignItems: "end" }}>
         <ArticleItemStats viewCount={viewCount} id={id} isEditor={isEditor} />
-        {isShowDesc && <ArticleItemDesc shortDesc={shortDesc} />}
-        <ArticleItemInfor
-          created={created}
-          authorId={authorId}
-          authorName={authorName}
-          authorLink={authorLink}
-          authorAvatar={authorAvatar}
-        />
-        {isShowCategories && (
-          <ArticleItemCategories categoriesId={categoriesId} />
-        )}
+        <div>
+          <ArticleItemTitle title={title} slugLink={slugLink} />
+          {isShowDesc && <ArticleItemDesc shortDesc={shortDesc} />}
+          {/* <ArticleItemInfor
+            created={created}
+            authorId={authorId}
+            authorName={authorName}
+            authorLink={authorLink}
+            authorAvatar={authorAvatar}
+          /> */}
+          {isShowCategories && (
+            <ArticleItemCategories categoriesId={categoriesId} />
+          )}
+        </div>
       </div>
     </article>
   );

@@ -60,7 +60,7 @@ export default function Dashboard() {
       Component: AddPost,
     },
     {
-      title: "danh sách bài đăng",
+      title: "Danh sách bản thảo",
       icon: <AppstoreOutlined />,
       href: "/dashboard/postListing",
       exact: false,
@@ -68,7 +68,7 @@ export default function Dashboard() {
       Component: ListingPost,
     },
     {
-      title: "Danh sách bài",
+      title: "Danh sách bài báo",
       icon: <BarsOutlined />,
       href: "/dashboard/postList",
       exact: false,
@@ -76,7 +76,7 @@ export default function Dashboard() {
       Component: ListPost,
     },
     {
-      title: "Danh sách REVIEW",
+      title: "Phân công người đánh",
       icon: <BarsOutlined />,
       href: "/dashboard/review",
       exact: false,

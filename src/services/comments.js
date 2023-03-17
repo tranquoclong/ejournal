@@ -1,8 +1,11 @@
 import { api } from '.';
 
 export const CommentsService = {
-  getPostFullText: ({postId}) => {
+  getPostFullText: ({ postId }) => {
     return api.call().post("/article/public/", { id: postId });
+  },
+  getPostFullTextFile: ({ postId }) => {
+    return api.call().post("/article/public-file/", { id: postId });
   },
   getCommentsByPostId: ({
     postId,

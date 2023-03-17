@@ -27,12 +27,7 @@ export const UserService = {
   postUpdateAccount(id, roleId) {
     return api.callWithAuth().put("/account/update/", { id, roleid: roleId });
   },
-  postAssignReview(id, roleId) {
-    return api.callWithAuth().post("/review/assign/", {
-      articleid: id.toString(),
-      reviewerid: roleId,
-    });
-  },
+
   activeUniversity({ id }) {
     return api.callWithAuth().put("/university/active/", { id });
   },

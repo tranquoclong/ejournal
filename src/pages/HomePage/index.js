@@ -9,7 +9,7 @@ import {
   actFetchPostsAsync,
 } from "../../store/post/actions";
 import Instagram from "../../components/Instagram";
-import SideBar from "./SideBar";
+// import SideBar from "./SideBar";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -32,15 +32,13 @@ export default function HomePage() {
         <div className="container">
           <div className="row">
             <div
-              className="blog_post_sec blog_post_inner width70"
-              style={{ width: "70%", float: "left" }}
+              className="blog_post_sec blog_post_inner"
             >
               <div className="row">
                 <ArticlesPopular />
                 <ArticlesList />
               </div>
             </div>
-            <SideBar />
           </div>
         </div>
       </section>

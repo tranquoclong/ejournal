@@ -32,7 +32,7 @@ function PostDetailHead({ isShowCategories = false }) {
             <div className="item-meta">
               <span style={{ paddingRight: "10px" }}>by</span>
               <a href="/">
-                <strong>{postAuthorName[0].fullname}</strong>
+                <strong>{postAuthorName[0]?.fullname}</strong>
               </a>
               <p>{dateStr}</p>
               <div style={{ display: "flex", alignItems: "baseline" }}>

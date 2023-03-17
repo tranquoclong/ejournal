@@ -13,18 +13,18 @@ const initPostState = {
   articlesLatest: [],
   articlesPopular: [],
   // articlesList: [],
-  articles:null,
-  manuscript:null,
+  articles: null,
+  manuscript: null,
   articlesSearchPaging: {
     list: [],
     currentPage: 1,
     totalPage: 1,
-    per_page: 2
+    per_page: 2,
   },
   postDetail: null,
   relatedAuthorPosts: [],
-  loadingLatestStatus: 'loading', // 'loading' , 'error', 'success'
-}
+  loadingLatestStatus: "loading", // 'loading' , 'error', 'success'
+};
 
 export default function reducer(state = initPostState, action) {
   switch (action.type) {
@@ -71,5 +71,4 @@ export default function reducer(state = initPostState, action) {
     default:
       return state;
   }
-  
 }

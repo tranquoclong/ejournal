@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleItem from "../../../../components/ArticleItem";
 import { actFetchManusAsync } from "../../../../store/post/actions";
-
 function ListingPost() {
   const dispatch = useDispatch();
   const manuscript = useSelector((state) => state.Post.manuscript);

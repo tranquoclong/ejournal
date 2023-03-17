@@ -1,5 +1,4 @@
 import { UserService } from "../../services/user";
-import { actFetchManus } from "../post/actions";
 // import { actSetToken } from "../auth/actions";
 
 export const ACT_GET_ME = "ACT_GET_ME";
@@ -404,11 +403,12 @@ export function actChangeProfileAsync(formData,id) {
   };
 }
 
-export function actSubmitReviewAsync(formData, articleid) {
+export function actSubmitReviewAsync(formData, articleid, allReview) {
   return async (dispatch) => {
     try {
       await UserService.submitReview(formData, articleid);
-      // dispatch(actGetMeAsync({ id }));
+      const response = allReview.filter((a) => a.id !== articleid);
+      dispatch(actGetAllReview(response));
       return {
         ok: true,
       };
@@ -487,23 +487,6 @@ export function actUpdateAccountAsync(id, roleId) {
   return async (dispatch) => {
     try {
       await UserService.postUpdateAccount(id, roleId);
-      return {
-        ok: true,
-      };
-    } catch (e) {
-      return {
-        ok: false,
-      };
-    }
-  };
-}
-
-export function actAssignReviewAsync(id, roleId, manuscript) {
-  return async (dispatch) => {
-    try {
-      await UserService.postAssignReview(id, roleId);
-      const response = manuscript.filter((m) => m.id !== id);
-      dispatch(actFetchManus(response));
       return {
         ok: true,
       };

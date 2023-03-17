@@ -31,4 +31,10 @@ export const PostService = {
   postArticle(values) {
     return api.call().post("article/submit/", values);
   },
+  postAssignReview(id, roleId) {
+    return api.callWithAuth().post("/review/assign/", {
+      articleid: id.toString(),
+      reviewerid: roleId,
+    });
+  },
 };

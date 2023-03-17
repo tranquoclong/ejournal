@@ -1,5 +1,5 @@
 import { PostService } from "../../services/post";
-import { actFetchCommentsAsync, actFetchFullTextAsync } from "../comments/actions";
+import { actFetchCommentsAsync, actFetchFullTextAsync, actFetchFullTextFileAsync } from "../comments/actions";
 
 export const ACT_FETCH_LATEST_POSTS = "ACT_FETCH_LATEST_POSTS";
 export const ACT_FETCH_POPULAR_POSTS = "ACT_FETCH_POPULAR_POSTS";
@@ -183,6 +183,7 @@ export function actFetchPostDetailAsync(slug) {
       );
       dispatch(actFetchCommentsAsync({ postId }));
       dispatch(actFetchFullTextAsync({ postId }));
+      dispatch(actFetchFullTextFileAsync({ postId }));
       dispatch(actFetchPostDetail({ post }));
       return {
         ok: true,
@@ -213,9 +214,27 @@ export function actFetchRelatedAuthorPostAsync({ author, exclude }) {
 export function actUpdateStatusPostAsync(path, id, manuscript) {
   return async (dispatch) => {
     try {
-      await PostService.updateStatusPost(path, id);
-      const response = manuscript.filter(m => m.id !== id);
+     await PostService.updateStatusPost(path, id);
+     const response = manuscript.filter(m => m.id !== id);
       dispatch(actFetchManus(response));
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+
+export function actAssignReviewAsync(id, roleId, manuscript) {
+  return async (dispatch) => {
+    try {
+      await PostService.postAssignReview(id, roleId);
+      const index = manuscript.findIndex((m) => m.id === id);
+      manuscript[index] = { ...manuscript[index], ...{ status: "PENDING" } };
+      dispatch(actFetchManus([...manuscript]));
       return {
         ok: true,
       };

@@ -34,8 +34,8 @@ function PostDetailHead({ isShowCategories = false }) {
               <a href="/">
                 <strong>{postAuthorName[0]?.fullname}</strong>
               </a>
-              <p>{dateStr}</p>
-              <div style={{ display: "flex", alignItems: "baseline" }}>
+              {/* <p>{dateStr}</p> */}
+              {/* <div style={{ display: "flex", alignItems: "baseline" }}>
                 <p
                   className="item views"
                   style={{ paddingRight: "15px", margin: "0px" }}
@@ -45,7 +45,7 @@ function PostDetailHead({ isShowCategories = false }) {
                 <p className="item comments">
                   {postCmtCount}100 <i className="icons ion-ios-chatbubble" />
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

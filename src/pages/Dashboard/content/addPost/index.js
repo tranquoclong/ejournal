@@ -6,12 +6,13 @@ import { NotificationManager } from "react-notifications";
 import { actPostArticleAsync } from "../../../../store/post/actions";
 import { useIsLogin } from "../../../../hooks/useIsLogin";
 import { actGetAllMajor } from "../../../../store/user/actions";
-import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
+// import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import "../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./addPost.css"
+import { storePdfToFireBase } from "../../../../utils/storePdfToFirebase.";
 function AddPost() {
   const dispatch = useDispatch();
   const { currentUser } = useIsLogin();
@@ -28,13 +29,16 @@ function AddPost() {
     email: "",
     iscorresponding: false,
   });
+  const [pdfFront, setPdfFront] = useState(null);
+  const [selectedFile, setSelectedFile] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState("");
-   const [editorState, setEditorState] = useState();
+  const [editorState, setEditorState] = useState();
     const onEditorStateChange = (state) => {
       setEditorState(state);
       setContent(draftToHtml(convertToRaw(state.getCurrentContent())));
     };
-  const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
+  const [isActive, setIsActive] = useState( false);
   const onClick = () => setIsActive(!isActive);
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
@@ -57,16 +61,24 @@ function AddPost() {
     []
   );
   function login() {
-    values.openaccess = values.openaccess === true;
-    dispatch(actPostArticleAsync({ ...values, content, authorlist })).then(
-      (res) => {
-        if (res.ok) {
-          NotificationManager.success("Cập nhật thành công");
-        } else {
-          NotificationManager.error("Cập nhật thất bại");
-        }
+    values.openaccess = values.openaccess === "true";
+    dispatch(
+      actPostArticleAsync({
+        ...values,
+        doc: pdfFront.pdfUrl ? pdfFront.pdfUrl : "",
+        content,
+        authorlist,
+      })
+    ).then((res) => {
+      if (res.ok) {
+        setContent("");
+        setEditorState("");
+        setPdfFront(null);
+        NotificationManager.success("Cập nhật thành công");
+      } else {
+        NotificationManager.error("Cập nhật thất bại");
       }
-    );
+    });
   }
   function handleChanges(key) {
     return (evt) => {
@@ -76,7 +88,37 @@ function AddPost() {
       });
     };
   }
-
+  useEffect(
+    () => {
+      const uploadPdf = async () => {
+        setIsLoading(true);
+        if (!selectedFile) {
+          setIsLoading(false);
+          return;
+        }
+        const { isSuccess, pdfNameFile, pdfUrl, message } =
+          await storePdfToFireBase(selectedFile);
+        if (isSuccess) {
+          setPdfFront({ pdfUrl, pdfNameFile });
+          setIsLoading(false);
+          return pdfUrl;
+        } else {
+          console.log(message);
+        }
+        setIsLoading(false);
+      };
+      uploadPdf();
+    },
+    // eslint-disable-next-line
+    [selectedFile]
+  );
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+    setSelectedFile(e.target.files[0]);
+  };
   return (
     <div className="dashboard-content">
       <div className="row">
@@ -113,9 +155,10 @@ function AddPost() {
                       }}
                       name="openaccess"
                       onChange={handleChange}
-                      value={values.openaccess || false}
+                      value={values.openaccess || ""}
                       required
                     >
+                      <option>chọn quyền truy cập</option>
                       <option value={false}>Hạn Chế</option>
                       <option value={true}>Công Khai</option>
                     </select>
@@ -146,6 +189,7 @@ function AddPost() {
                       value={values.majorid || ""}
                       required
                     >
+                      <option>chọn ngành học </option>
                       {allMajor &&
                         allMajor.map((major, index) => (
                           <option value={major.id} key={index}>
@@ -221,7 +265,7 @@ function AddPost() {
                             className="col-md-6"
                             style={{ color: "lightcoral" }}
                           >
-                            <button className="button preview" onClick={onAdd}>
+                            <button type="button" className="button preview" onClick={onAdd}>
                               Thêm tác giả
                             </button>
                           </div>
@@ -259,8 +303,47 @@ function AddPost() {
                   </div>
                 </div>
               </div>
-              <div className="form" style={{ color: "lightcoral",height: "43vh" }}>
+              <div className="form" style={{ color: "lightcoral" }}>
                 <label>Nội dung</label>
+                {isLoading ? (
+                  <div>
+                    <button
+                      type="button"
+                      disabled
+                      style={{
+                        opacity: ".4",
+                      }}
+                      className="button preview"
+                    >
+                      loading..
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      position: "relative",
+                    }}
+                  >
+                    <button type="button" className="button preview">
+                      Choose PDF
+                    </button>
+                    <input
+                      type="file"
+                      name="profileImageUrl"
+                      accept="application/pdf"
+                      onChange={onSelectFile}
+                      id="upload"
+                      className="btn"
+                      style={{
+                        opacity: 0,
+                        zIndex: 1,
+                        top: 0,
+                        position: "absolute",
+                      }}
+                    />
+                    {pdfFront && <label>{pdfFront.pdfNameFile}</label>}
+                  </div>
+                )}
                 {errors.content ? ` * ${errors.content}` : ""}
                 <Editor
                   editorState={editorState}

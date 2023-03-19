@@ -2,7 +2,7 @@ import "./post-detail.css";
 import { useEffect, useState } from "react";
 import PostDetailHead from "../../components/PostDetail/PostDetailHead";
 import PostDetailContent from "../../components/PostDetail/PostDetailContent";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   actFetchPostDetailAsync,
@@ -10,11 +10,11 @@ import {
 } from "../../store/post/actions";
 import Loading from "../../common/Loading";
 import PageNotFound from "../404";
-import Instagram from "../../components/Instagram";
 
 function PostDetail() {
   const dispatch = useDispatch();
   const params = useParams();
+    const history = useHistory();
   const slug = params.slug;
   const [status, setStatus] = useState("loading");
 
@@ -24,6 +24,7 @@ function PostDetail() {
       if (res.ok) {
         setStatus("success");
       } else {
+        history.push("/login");
         setStatus("error");
       }
     });
@@ -41,10 +42,6 @@ function PostDetail() {
     return <Loading isFixed />;
   }
 
-  if (status === "error") {
-    return <PageNotFound />;
-  }
-
   return (
     <>
       <PostDetailHead isShowCategories />
@@ -54,7 +51,6 @@ function PostDetail() {
           {/* <PostDetailSidebar /> */}
         </div>
       </section>
-      <Instagram />
     </>
   );
 }

@@ -20,7 +20,7 @@ const initState = {
     per_page: 2,
   },
   hashCommentsByParentById: {},
-  fullText: {},
+  fullText: null,
   fullTextFile:{},
 };
 

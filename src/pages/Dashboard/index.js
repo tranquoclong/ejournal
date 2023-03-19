@@ -23,6 +23,8 @@ import { NotificationContainer } from 'react-notifications';
 import { useIsLogin } from "../../hooks/useIsLogin";
 import ListPost from "./content/listPost";
 import Review from "./content/review";
+import AuthorListingPost from "./content/listingPost/authorListingPost";
+import AuthorListPost from "./content/listPost/authorListPost";
 
 export default function Dashboard() {
   // useAuthenticated();
@@ -72,8 +74,24 @@ export default function Dashboard() {
       icon: <BarsOutlined />,
       href: "/dashboard/postList",
       exact: false,
-      role: ["EDITOR_IN_CHIEF", "EDITOR", "REVIEWER", "AUTHOR", "MEMBER"],
+      role: ["EDITOR_IN_CHIEF", "EDITOR", "REVIEWER", "MEMBER"],
       Component: ListPost,
+    },
+    {
+      title: "Danh sách bản thảo",
+      icon: <AppstoreOutlined />,
+      href: "/dashboard/postAuthorListing",
+      exact: false,
+      role: ["AUTHOR"],
+      Component: AuthorListingPost,
+    },
+    {
+      title: "Danh sách bài báo",
+      icon: <BarsOutlined />,
+      href: "/dashboard/postAuthorList",
+      exact: false,
+      role: ["AUTHOR"],
+      Component: AuthorListPost,
     },
     {
       title: "Phân công người đánh",

@@ -51,16 +51,16 @@ function Review() {
             <div className="dashboard-list-box">
               <h4 className="gray">Đánh giá</h4>
               <form onSubmit={onFinish} className="dashboard-list-box-static">
-                <label>articleid :</label> {articleid}
+                <label>bài báo :</label> {articleid}
                 <div className="my-profile">
-                  <label>content *</label>
+                  <label>Nội dung đánh giá *</label>
                   <input
                     type="text"
                     placeholder="content"
                     value={formData.content}
                     onChange={handleChange("content")}
                   />
-                  <label>suggest *</label>
+                  <label>Đồng ý bản thảo *</label>
                   <select
                     className="chosen-select-no-single"
                     style={{

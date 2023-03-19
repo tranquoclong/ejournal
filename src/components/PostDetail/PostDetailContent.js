@@ -1,21 +1,30 @@
 // import PostComments from "./PostComments";
-import PostDetailTags from "./PostDetailTags";
+// import PostDetailTags from "./PostDetailTags";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 // import { Document, Page } from "react-pdf";
+import { Worker } from "@react-pdf-viewer/core";
+import { Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+// import { getDownloadURL, ref } from "firebase/storage";
+// import { storage } from "../../configs/firebase.configs";
+import { pdfjs } from "react-pdf";
+import { useIsLogin } from "../../hooks/useIsLogin";
 function PostDetailContent() {
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  // const [resume, setResume] = useState(null);
   // const slug = useSelector(state => state.Posts.currentPostSlug);
   const post = useSelector((state) => state.Post.postDetail);
   const fullText = useSelector((state) => state.Comments.fullText);
-  const fullTextFile = useSelector((state) => state.Comments.fullTextFile);
-  console.log("🚀 ~ file: PostDetailContent.js:11 ~ PostDetailContent ~ fullTextFile:", fullTextFile)
+  // const fullTextFile = useSelector((state) => state.Comments.fullTextFile);
   const [state, SetState] = useState(false);
+  const { admin } = useIsLogin();
+
   if (!post) {
     return <div>Post detail content</div>;
   }
-
-  //     const encodedString = Buffer.from(fullTextFile.doc).toString("base64");
-  // console.log("Called", encodedString);
       return (
         <div className="blog-detail-main">
           <div className="post_body">
@@ -25,11 +34,20 @@ function PostDetailContent() {
                 __html: state ? fullText.content : post.summary,
               }}
             />
-            {/* {fullTextFile.doc && (
-              <Document file={{ data: encodedString }}>
-                <Page pageNumber={1} />
-              </Document>
-            )} */}
+            {state && (
+              <>
+                {fullText.doc && (
+                  <Worker
+                    workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`}
+                  >
+                    <Viewer
+                      fileUrl={fullText.doc}
+                      plugins={[defaultLayoutPluginInstance]}
+                    />
+                  </Worker>
+                )}
+              </>
+            )}
           </div>
           <div
             style={{
@@ -53,21 +71,26 @@ function PostDetailContent() {
                     Đọc tất cả
                   </button>
                 ) : (
-                  <button
-                    style={{
-                      background:
-                        "linear-gradient(144deg, #555, #666 50%, #777)",
-                      padding: "10px",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    Xem thêm
-                  </button>
+                  <>
+                    {fullText && (
+                      <button
+                        style={{
+                          background:
+                            "linear-gradient(144deg, #555, #666 50%, #777)",
+                          padding: "10px",
+                          borderRadius: "10px",
+                        }}
+                        onClick={() => SetState(true)}
+                      >
+                        Đọc tất cả
+                      </button>
+                    )}
+                  </>
                 )}
               </>
             )}
           </div>
-          <PostDetailTags />
+          {/* <PostDetailTags /> */}
           {/* <PostComments /> */}
         </div>
       );

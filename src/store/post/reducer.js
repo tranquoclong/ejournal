@@ -3,6 +3,8 @@ import {
   ACT_FETCH_MANUS,
   ACT_FETCH_LATEST_POSTS,
   ACT_FETCH_POPULAR_POSTS,
+  ACT_FETCH_AUTHOR_MANUS,
+  ACT_FETCH_AUTHOR_POSTS,
   ACT_FETCH_POST_DETAIL,
   ACT_FETCH_RELATED_AUTHOR_POST,
   ACT_RESET_DATA_DETAIL,
@@ -15,6 +17,8 @@ const initPostState = {
   // articlesList: [],
   articles: null,
   manuscript: null,
+  authorArticles: null,
+  authorManuscript: null,
   articlesSearchPaging: {
     list: [],
     currentPage: 1,
@@ -47,6 +51,16 @@ export default function reducer(state = initPostState, action) {
       return {
         ...state,
         manuscript: action.payload,
+      };
+    case ACT_FETCH_AUTHOR_POSTS:
+      return {
+        ...state,
+        authorArticles: action.payload,
+      };
+    case ACT_FETCH_AUTHOR_MANUS:
+      return {
+        ...state,
+        authorManuscript: action.payload,
       };
     case ACT_FETCH_LATEST_POSTS:
       return {

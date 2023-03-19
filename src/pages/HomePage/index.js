@@ -8,7 +8,6 @@ import {
   actFetchPopularPostsAsync,
   actFetchPostsAsync,
 } from "../../store/post/actions";
-import Instagram from "../../components/Instagram";
 // import SideBar from "./SideBar";
 
 export default function HomePage() {
@@ -42,7 +41,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <Instagram />
     </>
   );
 }

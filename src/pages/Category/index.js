@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { actFetchPostsSearchAsync } from "../../store/post/actions";
 // import { usePaging } from "../../hooks/usePaging";
-import Instagram from "../../components/Instagram";
 import { posts } from "../../data";
 
 function CategoryPage() {
@@ -106,7 +105,6 @@ function CategoryPage() {
           </div>
         </div>
       </section>
-      <Instagram />
     </main>
   );
 }

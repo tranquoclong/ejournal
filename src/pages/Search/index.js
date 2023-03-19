@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { actFetchPostsSearchAsync } from "../../store/post/actions";
 import { usePaging } from "../../hooks/usePaging";
-import Instagram from "../../components/Instagram";
 
 function SearchPage() {
   const history = useHistory();
@@ -94,7 +93,6 @@ function SearchPage() {
           </div>
         </div>
       </section>
-      <Instagram />
     </main>
   );
 }

@@ -5,6 +5,8 @@ export const ACT_FETCH_LATEST_POSTS = "ACT_FETCH_LATEST_POSTS";
 export const ACT_FETCH_POPULAR_POSTS = "ACT_FETCH_POPULAR_POSTS";
 export const ACT_FETCH_POSTS = "ACT_FETCH_POSTS";
 export const ACT_FETCH_MANUS = "ACT_FETCH_MANUS";
+export const ACT_FETCH_AUTHOR_POSTS = "ACT_FETCH_AUTHOR_POSTS";
+export const ACT_FETCH_AUTHOR_MANUS = "ACT_FETCH_AUTHOR_MANUS";
 export const ACT_FETCH_POSTS_SEARCH = "ACT_FETCh_POSTS_SEARCH";
 export const ACT_FETCH_POST_DETAIL = "ACT_FETCH_POST_DETAIL";
 export const ACT_FETCH_RELATED_AUTHOR_POST = "ACT_FETCH_RELATED_AUTHOR_POST";
@@ -46,10 +48,22 @@ export function actFetchPosts(posts) {
     payload: posts,
   };
 }
+export function actFetchAuthorPosts(authorPosts) {
+  return {
+    type: ACT_FETCH_AUTHOR_POSTS,
+    payload: authorPosts,
+  };
+}
 export function actFetchManus(manuscript) {
   return {
     type: ACT_FETCH_MANUS,
     payload: manuscript,
+  };
+}
+export function actFetchAuthorManus(authorManuscript) {
+  return {
+    type: ACT_FETCH_AUTHOR_MANUS,
+    payload: authorManuscript,
   };
 }
 export function actFetchPostsSearch({
@@ -125,6 +139,14 @@ export const actFetchPostsAsync = () => {
     } catch (e) {}
   };
 };
+export const actFetchAuthorPostsAsync = () => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getListAuthorPosts();
+      dispatch(actFetchAuthorPosts(response.data.list));
+    } catch (e) {}
+  };
+};
 export const actFetchManusAsync = () => {
   return async (dispatch) => {
     try {
@@ -133,7 +155,14 @@ export const actFetchManusAsync = () => {
     } catch (e) {}
   };
 };
-
+export const actFetchAuthorManusAsync = () => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getListAuthorManus();
+      dispatch(actFetchAuthorManus(response.data.list));
+    } catch (e) {}
+  };
+};
 export const actFetchPostsSearchAsync = ({
   page = 1,
   per_page = 2,

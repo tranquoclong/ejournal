@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ArticleItem from "../../../../components/ArticleItem";
+// import ArticleItem from "../../../../components/ArticleItem";
+import ArticleItemEditor from "../../../../components/ArticleItem/ArticleItemEditor";
 import { actFetchManusAsync } from "../../../../store/post/actions";
 function ListingPost() {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ function ListingPost() {
                           className="col-md-6 col-sm-12 mar-bottom-30"
                           key={post.id}
                         >
-                          <ArticleItem
+                          <ArticleItemEditor
                             post={post}
                             isStyleRow
                             isShowCategories

@@ -1,7 +1,7 @@
 // import PostComments from "./PostComments";
 // import PostDetailTags from "./PostDetailTags";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { Document, Page } from "react-pdf";
 import { Worker } from "@react-pdf-viewer/core";
 import { Viewer } from "@react-pdf-viewer/core";
@@ -11,16 +11,34 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 // import { getDownloadURL, ref } from "firebase/storage";
 // import { storage } from "../../configs/firebase.configs";
 import { pdfjs } from "react-pdf";
-import { useIsLogin } from "../../hooks/useIsLogin";
+// import axios from "axios";
+// import { useIsLogin } from "../../hooks/useIsLogin";
 function PostDetailContent() {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  // const [resume, setResume] = useState(null);
-  // const slug = useSelector(state => state.Posts.currentPostSlug);
+
   const post = useSelector((state) => state.Post.postDetail);
-  const fullText = useSelector((state) => state.Comments.fullText);
-  // const fullTextFile = useSelector((state) => state.Comments.fullTextFile);
+  // const baseURL = "http://localhost:5000/";
+  // const [review, setReview] = useState(null);
+  // useEffect(() => {
+  //   const getAccountInfo = async () => {
+  //     const response = await axios
+  //       .create({
+  //         baseURL,
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         withCredentials: true,
+  //       })
+  //       .post("article/public/", { id: post.id });
+  //     // setReview(response.data.list[0]);
+  //   };
+  //   post && getAccountInfo();
+  //   // eslint-disable-next-line
+  // }, []);
+
+  // const fullText = useSelector((state) => state.Comments.fullText);
+  const fullTextFile = useSelector((state) => state.Comments.fullTextFile);
   const [state, SetState] = useState(false);
-  const { admin } = useIsLogin();
 
   if (!post) {
     return <div>Post detail content</div>;
@@ -31,17 +49,17 @@ function PostDetailContent() {
             <div
               className="rte"
               dangerouslySetInnerHTML={{
-                __html: state ? fullText.content : post.summary,
+                __html: state ? fullTextFile.content : post.summary,
               }}
             />
             {state && (
               <>
-                {fullText.doc && (
+                {fullTextFile.doc && (
                   <Worker
                     workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`}
                   >
                     <Viewer
-                      fileUrl={fullText.doc}
+                      fileUrl={fullTextFile.doc}
                       plugins={[defaultLayoutPluginInstance]}
                     />
                   </Worker>
@@ -72,7 +90,7 @@ function PostDetailContent() {
                   </button>
                 ) : (
                   <>
-                    {fullText && (
+                    {fullTextFile && (
                       <button
                         style={{
                           background:

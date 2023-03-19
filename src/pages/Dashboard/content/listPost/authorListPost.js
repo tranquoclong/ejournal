@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ArticleItem from "../../../../components/ArticleItem";
+import ArticleItemAuthor from "../../../../components/ArticleItem/ArticleItemAuthor";
 import { actFetchAuthorPostsAsync } from "../../../../store/post/actions";
 function AuthorListPost() {
   const dispatch = useDispatch();
@@ -27,10 +27,7 @@ function AuthorListPost() {
                           className="col-md-6 col-sm-12 mar-bottom-30"
                           key={post.id}
                         >
-                          <ArticleItem
-                            post={post}
-                            isStyleRow
-                          />
+                          <ArticleItemAuthor post={post} isStyleRow />
                         </div>
                       );
                     })}

@@ -71,8 +71,8 @@ function Review() {
                     onChange={handleChange("suggest")}
                     required
                   >
-                    <option value={true}>true</option>
-                    <option value={false}>false</option>
+                    <option value={true}>Đồng Ý</option>
+                    <option value={false}>Không Đồng Ý</option>
                   </select>
                 </div>
                 <button className="button">Lưu thay đổi</button>
@@ -95,13 +95,13 @@ function Review() {
                             </div>
                             <div className="user-btns" style={{alignItems: "center",display: "flex"}}>
                               <Link to={`/post/${user.id}`} className="button">
-                                View
+                                Xem
                               </Link>
                               <button
                                 className="button"
                                 onClick={() => setArticleid(user.id)}
                               >
-                                Edit
+                                Chỉnh Sửa
                               </button>
                             </div>
                           </div>

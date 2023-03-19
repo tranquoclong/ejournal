@@ -1,13 +1,21 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
+import { actLogout } from "../../../store/auth/actions";
 
 function ProfileNav() {
   const { currentUser } = useIsLogin();
+    const dispatch = useDispatch();
+    const history = useHistory();
   const dropdownRef = useRef(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
   const onClick = () => setIsActive(!isActive);
+      function handleLogout(evt) {
+        evt.preventDefault();
+        dispatch(actLogout({ history }));
+      }
   return (
     <div
       ref={dropdownRef}
@@ -34,25 +42,13 @@ function ProfileNav() {
       </div>
       <ul className="dropdown-menu">
         <li>
-          <Link to="#">
-            <i className="sl sl-icon-settings" />
-            Cài đặt
-          </Link>
-        </li>
-        <li>
-          <Link to="#">
+          <Link to="/dashboard/profile">
             <i className="sl sl-icon-user" />
             Hồ sơ
           </Link>
         </li>
         <li>
-          <Link to="#">
-            <i className="sl sl-icon-lock" />
-            Đổi mật khẩu
-          </Link>
-        </li>
-        <li>
-          <Link to="#">
+          <Link to="#" onClick={handleLogout}>
             <i className="sl sl-icon-power" />
             Đăng xuất
           </Link>

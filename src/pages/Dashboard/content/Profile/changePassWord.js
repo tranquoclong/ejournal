@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { actChangePasswordAsync } from "../../../../store/user/actions";
 import { NotificationManager } from "react-notifications";
 import EyePass from "../../../../common/EyePass";
+import PaymentUni from "./paymentUni";
+import { useIsLogin } from "../../../../hooks/useIsLogin";
 function ChangePassWord() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +32,7 @@ function ChangePassWord() {
       setIsLoading(false);
     });
   }
-
+const { accessType } = useIsLogin();
   function handleChange(key) {
     return (evt) => {
       setFormData({
@@ -70,6 +72,7 @@ function ChangePassWord() {
           </button>
         </form>
       </div>
+      {accessType === "UNIVERSITY" && <PaymentUni />}
     </div>
   );
 }

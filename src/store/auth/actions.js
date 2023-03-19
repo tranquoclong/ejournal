@@ -31,7 +31,7 @@ export function actSetToken(token) {
 export function actLogout({ history }) {
   return async (dispatch) => {
     try {
-      history.push("/");
+      history.push("/login");
       await AuthService.logout();
       dispatch(actLogoutAsync());
       return {

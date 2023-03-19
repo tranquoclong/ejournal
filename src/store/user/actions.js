@@ -229,7 +229,38 @@ export function actActiveUniversityAsync(id, allUniversity) {
     }
   };
 }
-
+export function actPaymentUniversityAsync(universityid) {
+  return async (dispatch) => {
+    try {
+      await UserService.paymentUniversity({
+        universityid,
+      });
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+export function actPaymentAsync(articleid) {
+  return async (dispatch) => {
+    try {
+      await UserService.payment({
+        articleid,
+      });
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
 export function actActiveMajorAsync(id, allMajor) {
   return async (dispatch) => {
     try {

@@ -31,6 +31,19 @@ export const UserService = {
   activeUniversity({ id }) {
     return api.callWithAuth().put("/university/active/", { id });
   },
+  paymentUniversity({ universityid }) {
+    return api.callWithAuth().post("/payment/submituniversity/", {
+      universityid,
+      amount: "150000",
+      period: "30",
+    });
+  },
+  payment({ articleid }) {
+    return api.callWithAuth().post("/payment/submitpersonal/", {
+      articleid,
+      amount: "150000",
+    });
+  },
   activeMajor({ id }) {
     return api.callWithAuth().put("/major/active/", { id });
   },

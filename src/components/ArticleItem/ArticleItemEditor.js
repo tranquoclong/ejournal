@@ -1,5 +1,5 @@
 import "./ArticleItem.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 // import ArticleItemInfor from "./ArticleItemInfor";
 import ArticleItemTitle from "./ArticleItemTitle";
 import ArticleItemThumbnail from "./ArticleItemThumbnail";
@@ -7,7 +7,6 @@ import ArticleItemDesc from "./ArticleItemDesc";
 import ArticleItemCategories from "./ArticleItemCategories";
 import ArticleItemStats from "./ArticleItemStats";
 import cls from "classnames";
-import axios from "axios";
 export default function ArticleItemEditor({
   post,
   isStyleRow,
@@ -21,24 +20,7 @@ export default function ArticleItemEditor({
     "blog-post_wrapper image-wrapper": isStyleRow,
     "blog-post_wrapper image-wrapper blog-wrapper-list": isStyleCard,
   });
-  const [review, setReview] = useState(null);
-  const baseURL = "http://localhost:5000/";
-  useEffect(() => {
-    const getAccountInfo = async () => {
-     const response = await axios
-       .create({
-         baseURL,
-         headers: {
-           "Content-Type": "application/json",
-         },
-         withCredentials: true,
-       })
-       .post("review/view/all/", { articleid: post.id });
-        setReview(response.data.list[0]);
-    };
-    getAccountInfo();
-    // eslint-disable-next-line
-  }, []);
+
   if (!post) {
     return null;
   }
@@ -64,12 +46,7 @@ export default function ArticleItemEditor({
         )}
       </div>
 
-      {review && (
-        <div className="post-content">
-          Đánh giá
-          <ArticleItemTitle title={review.content} />
-        </div>
-      )}
+
       <div
         className="post-content"
         style={{

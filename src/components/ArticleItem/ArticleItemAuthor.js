@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./ArticleItem.css";
 import ArticleItemTitle from "./ArticleItemTitle";
 import ArticleItemThumbnail from "./ArticleItemThumbnail";
@@ -6,7 +6,7 @@ import ArticleItemThumbnail from "./ArticleItemThumbnail";
 // import ArticleItemCategories from "./ArticleItemCategories";
 // import ArticleItemStats from "./ArticleItemStats";
 import cls from "classnames";
-import axios from "axios";
+import ArticleItemStats from "./ArticleItemStats";
 
 export default function ArticleItemAuthor({
   post,
@@ -25,24 +25,6 @@ export default function ArticleItemAuthor({
   const title = post.title;
   const slugLink = `/post/${post.id}`;
   const thumbnail = `https://source.unsplash.com/random/?book,post,${post.id}`;
-  const [review, setReview] = useState(null);
-  const baseURL = "http://localhost:5000/";
-  useEffect(() => {
-    const getAccountInfo = async () => {
-     const response = await axios
-       .create({
-         baseURL,
-         headers: {
-           "Content-Type": "application/json",
-         },
-         withCredentials: true,
-       })
-       .post("review/view/all/", { articleid: post.id });
-        setReview(response.data.list[0]);
-    };
-    getAccountInfo();
-    // eslint-disable-next-line
-  }, []);
     if (!post) {
       return null;
     }
@@ -55,12 +37,7 @@ export default function ArticleItemAuthor({
           thumbnail={thumbnail}
         />
       </div>
-      {review && (
-        <div className="post-content">
-          Đánh giá
-          <ArticleItemTitle title={review.content} />
-        </div>
-      )}
+
       <div
         className="post-content"
         style={{
@@ -70,6 +47,7 @@ export default function ArticleItemAuthor({
           alignItems: "end",
         }}
       >
+        <ArticleItemStats id={post.id} isAuthor={true} />
         <ArticleItemTitle title={title} slugLink={slugLink} />
       </div>
     </article>

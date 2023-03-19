@@ -13,6 +13,7 @@ import draftToHtml from "draftjs-to-html";
 import "../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./addPost.css"
 import { storePdfToFireBase } from "../../../../utils/storePdfToFirebase.";
+import axios from "axios";
 function AddPost() {
   const dispatch = useDispatch();
   const { currentUser } = useIsLogin();
@@ -52,14 +53,24 @@ function AddPost() {
     iscorresponding: false,
   })
   }
-  const allMajor = useSelector((state) => state.User.allMajor);
-  useEffect(
-    () => {
-      dispatch(actGetAllMajor());
-    },
-    // eslint-disable-next-line
-    []
-  );
+  const baseURL = "http://localhost:5000/";
+    const [allMajor, setAllMajor] = useState(null);
+    useEffect(() => {
+      const getAccountInfo = async () => {
+        const response = await axios
+          .create({
+            baseURL,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          })
+          .get("article/submit/major",);
+        setAllMajor(response.data.list);
+      };
+      getAccountInfo();
+      // eslint-disable-next-line
+    }, []);
   function login() {
     values.openaccess = values.openaccess === "true";
     dispatch(

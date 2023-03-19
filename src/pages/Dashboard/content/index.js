@@ -67,67 +67,6 @@ function ContentDashboard() {
   return (
     <div className="dashboard-content">
       <div className="row">
-        {/* Item */}
-        <div className="col-lg-3 col-md-6 col-xs-6">
-          <div className="dashboard-stat color-1">
-            <div className="dashboard-stat-content">
-              <h4>6</h4>
-              <span>Danh sách hoạt động</span>
-            </div>
-            <div className="dashboard-stat-icon">
-              <GlobalOutlined />
-            </div>
-            <div className="dashboard-stat-item">
-              <p>Ai đó đã đánh dấu danh sách của bạn!</p>
-            </div>
-          </div>
-        </div>
-        {/* Item */}
-        <div className="col-lg-3 col-md-6 col-xs-6">
-          <div className="dashboard-stat color-2">
-            <div className="dashboard-stat-content">
-              <h4>726</h4>
-              <span>Tổng số bài viết</span>
-            </div>
-            <div className="dashboard-stat-icon">
-              <LineChartOutlined />
-            </div>
-            <div className="dashboard-stat-item">
-              <p>Ai đó đã đánh dấu danh sách của bạn!</p>
-            </div>
-          </div>
-        </div>
-        {/* Item */}
-        <div className="col-lg-3 col-md-6 col-xs-6">
-          <div className="dashboard-stat color-3">
-            <div className="dashboard-stat-content">
-              <h4>95</h4>
-              <span>Tổng số đánh giá</span>
-            </div>
-            <div className="dashboard-stat-icon">
-              <TeamOutlined />
-            </div>
-            <div className="dashboard-stat-item">
-              <p>Ai đó đã đánh dấu danh sách của bạn!</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-3 col-md-6 col-xs-6">
-          <div className="dashboard-stat color-4">
-            <div className="dashboard-stat-content">
-              <h4>126</h4>
-              <span>Dấu trang</span>
-            </div>
-            <div className="dashboard-stat-icon">
-              <HeartOutlined />
-            </div>
-            <div className="dashboard-stat-item">
-              <p>Ai đó đã đánh dấu danh sách của bạn!</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
         <div className="col-lg-12 col-md-12 col-xs-12 traffic">
           <div className="dashboard-list-box">
             <h4 className="gray">Danh sách quyền truy cập</h4>

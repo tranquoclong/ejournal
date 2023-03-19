@@ -1,4 +1,4 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/Search";
@@ -15,6 +15,7 @@ import { actFetchCategoriesAsync } from "./store/category/actions";
 import { actFetchMainMenusAsync } from "./store/menus/actions";
 import { actGetMeAsync } from "./store/user/actions";
 import { actSetToken } from "./store/auth/actions";
+import { useIsLogin } from "./hooks/useIsLogin";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,7 +41,8 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+const { isLogin, admin } = useIsLogin();
+console.log(isLogin);
   return (
     <main className="home-default">
       {!routeMatch && <Header />}
@@ -60,9 +62,32 @@ function App() {
         <Route path="/dashboard">
           <Dashboard />
         </Route>
-        <Route path="/" exact>
+        {/* <Route path="/" exact>
           <HomePage />
-        </Route>
+        </Route> */}
+        <Route
+          path="/"
+          exact
+          render={() =>
+            isLogin ? (
+              admin !== "ADMIN" ? (
+                <HomePage />
+              ) : (
+                <Redirect
+                  to={{
+                    pathname: "/dashboard",
+                  }}
+                />
+              )
+            ) : (
+              <Redirect
+                to={{
+                  pathname: "/login",
+                }}
+              />
+            )
+          }
+        />
         <Route>
           <PageNotFound />
         </Route>

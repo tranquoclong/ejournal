@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { CLOSE_MODAL } from "../../store/modal/actions";
-import { NotificationManager } from "react-notifications";
-import { actUpdateStatusPostAsync } from "../../store/post/actions";
-
 export const ModalFooter = styled.div`
   display: flex;
   justify-content: center;
@@ -98,23 +95,8 @@ const Message = styled.div`
   color: #000;
 `;
 
-const ManuscriptModal = ({id}) => {
-  const [isLoading, setIsLoading] = useState(false);
+const ReviewModal = ({ review }) => {
   const dispatch = useDispatch();
-  const manuscript = useSelector((state) => state.Post.manuscript);
-  const onSubmit = (path) => {
-    setIsLoading(true);
-    dispatch(actUpdateStatusPostAsync(path, id, manuscript)).then((res) => {
-      if (res.ok) {
-        NotificationManager.success("Cập nhật thành công");
-      } else {
-        NotificationManager.error("Cập nhật thất bại");
-      }
-      closeModal();
-      setIsLoading(false);
-    });
-  };
-
   const closeModal = () => {
     dispatch({
       type: CLOSE_MODAL,
@@ -123,21 +105,13 @@ const ManuscriptModal = ({id}) => {
 
   return (
     <div>
-      <Message>Cập nhật quyền truy cập</Message>
+      <Message>Nhận Xét Của Người Đánh Giá</Message>
+      <Message>{review}</Message>
       <ModalFooter>
-        <Button1 onClick={() => onSubmit("accept")} disabled={isLoading}>
-          {isLoading ? "Deleting..." : "Chấp Nhận"}
-        </Button1>
-        <Button2 onClick={() => onSubmit("reject")} disabled={isLoading}>
-          {isLoading ? "Deleting..." : "Từ Chối"}
-        </Button2>
-        <Button3 onClick={() => onSubmit("revise")} disabled={isLoading}>
-          {isLoading ? "Deleting..." : "Làm Lại"}
-        </Button3>
         <CloseButton onClick={closeModal}> Thoát </CloseButton>
       </ModalFooter>
     </div>
   );
 };
 
-export default ManuscriptModal;
+export default ReviewModal;

@@ -5,6 +5,9 @@ export const PostService = {
   getListPosts() {
     return api.call().get("/article/");
   },
+  getUpdatePosts(id) {
+    return api.call().get(`/article/manuscript/info?id=${id}`);
+  },
   getListAuthorPosts() {
     return api.call().get("/author/article/");
   },
@@ -13,6 +16,18 @@ export const PostService = {
   },
   getListManus() {
     return api.call().get("/editor/manuscript/");
+  },
+  getPaymentAu() {
+    return api.call().get("/payment/mypayment/");
+  },
+  getPaymentUni() {
+    return api.call().get("/universitypayment/corresponding/");
+  },
+  getPaymentUnis() {
+    return api.call().get("/payment/universitypayment/");
+  },
+  getPayment() {
+    return api.call().get("/payment/personalpayment/");
   },
   getListAuthorManus() {
     return api.call().get("/author/manuscript/");
@@ -34,8 +49,14 @@ export const PostService = {
   updateStatusPost(path, id) {
     return api.call().put(`/editor/${path}/`, { id });
   },
+  deletePost(id) {
+    return api.call().delete(`/article/manuscript/delete?id=${id}`);
+  },
   postArticle(values) {
-    return api.call().post("article/submit-file/", values);
+    return api.call().post("/article/submit-file/", values);
+  },
+  putArticle(values) {
+    return api.call().put("article/manuscript/update/", values);
   },
   postAssignReview(id, roleId) {
     return api.callWithAuth().post("/review/assign/", {

@@ -10,24 +10,7 @@ function NavDashboard() {
         <Link to="/">eJounal</Link>
       </div>
       <div className="content-right pull-right">
-        <div className="search-bar">
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              id="search"
-              placeholder="Search Now"
-            />
-            <Link to="#">
-              <span className="search_btn">
-                <i className="fa fa-search" aria-hidden="true" />
-              </span>
-            </Link>
-          </div>
-        </div>
         <ProfileNav />
-        <Notify />
-        <Bell />
       </div>
     </div>
   );

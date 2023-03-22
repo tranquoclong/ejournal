@@ -48,13 +48,13 @@ const { accessType } = useIsLogin();
         <h4 className="gray">Thay đổi mật khẩu</h4>
         <form onSubmit={onFinish} className="dashboard-list-box-static">
           <div className="my-profile">
-            <label className="margin-top-0">Mật khẩu củ *</label>
+            <label className="margin-top-0">Mật khẩu cũ *</label>
             <EyePass
               placeholder="Điền mật khẩu củ"
               value={formData.oldPassword}
               onChange={handleChange("oldPassword")}
             />
-            <label>Mất khẩu mới *</label>
+            <label>Mật khẩu mới *</label>
             <EyePass
               placeholder="Điền mật khẩu mới"
               value={formData.newPassword}

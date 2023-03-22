@@ -3,17 +3,19 @@ import useForm from "../../../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
 import { validateAddPost } from "../../../../components/Validate/validateInput";
 import { NotificationManager } from "react-notifications";
-import { actPostArticleAsync } from "../../../../store/post/actions";
+import { actFetchUpdatePosts, actPostArticleAsync, actPutArticleAsync } from "../../../../store/post/actions";
 import { useIsLogin } from "../../../../hooks/useIsLogin";
-import { actGetAllMajor } from "../../../../store/user/actions";
+//import { actGetAllMajor } from "../../../../store/user/actions";
 // import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
+import htmlToDraft from "html-to-draftjs";
 import { Editor } from "react-draft-wysiwyg";
-import { convertToRaw } from "draft-js";
+import { convertToRaw,ContentState ,EditorState} from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import "../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./addPost.css"
 import { storePdfToFireBase } from "../../../../utils/storePdfToFirebase.";
 import axios from "axios";
+// import { PayPalButton } from 'react-paypal-button-v2/lib';
 function AddPost() {
   const dispatch = useDispatch();
   const { currentUser } = useIsLogin();
@@ -30,31 +32,64 @@ function AddPost() {
     email: "",
     iscorresponding: false,
   });
-  const [pdfFront, setPdfFront] = useState(null);
+ const infoUpdate = useSelector((state) => state.Post.infoUpdate);
+  const [pdfFront, setPdfFront] = useState({ pdfUrl:null, pdfNameFile:null });
   const [selectedFile, setSelectedFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState("");
+  const [checkUpdate, setCheckUpdate] = useState(false);
   const [editorState, setEditorState] = useState();
-    const onEditorStateChange = (state) => {
+    const onEditorStateChange = (state) => {  
       setEditorState(state);
       setContent(draftToHtml(convertToRaw(state.getCurrentContent())));
     };
   const [isActive, setIsActive] = useState( false);
   const onClick = () => setIsActive(!isActive);
-  const { values, errors, handleChange, handleSubmit } = useForm(
+  const { values, errors, setValues, handleChange, handleSubmit } = useForm(
     login,
     validateAddPost
   );
-  const onAdd= () => {
-    setAuthorlist([...[author],...authorlist])
-    setAuthor({
-    fullname: "",
-    email: "",
-    iscorresponding: false,
-  })
-  }
+    useEffect(() => {
+      if (infoUpdate !== null) {
+        setValues(infoUpdate);
+        setAuthorlist(infoUpdate.author);
+        infoUpdate.doc && setPdfFront({ pdfUrl: infoUpdate.doc, pdfNameFile:"update File PDF" });
+        if (infoUpdate.content !== null) {
+          const blocksFromHtml = htmlToDraft(infoUpdate?.content);
+          const { contentBlocks, entityMap } = blocksFromHtml;
+          const contentState = ContentState.createFromBlockArray(
+            contentBlocks,
+            entityMap
+          );
+          const editorState = EditorState.createWithContent(contentState);
+          setEditorState(editorState);
+        }
+        setCheckUpdate(true);
+      }
+      // eslint-disable-next-line
+    }, [infoUpdate]);
+    const [error, setError] = useState("");
+   const validateAuthor = () => {
+     let isValid = true;
+     if (!/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/.test(author.email)) {
+       setError("Định dạng email không đúng");
+       isValid = false;
+     }
+     return isValid;
+   };
+     const onAdd = () => {
+       if (validateAuthor()) {
+         setAuthorlist([...[author], ...authorlist]);
+         setAuthor({
+           fullname: "",
+           email: "",
+           iscorresponding: false,
+         });
+          setError("");
+       }
+     };
   const baseURL = "http://localhost:5000/";
-    const [allMajor, setAllMajor] = useState(null);
+  const [allMajor, setAllMajor] = useState(null);
     useEffect(() => {
       const getAccountInfo = async () => {
         const response = await axios
@@ -74,20 +109,29 @@ function AddPost() {
   function login() {
     values.openaccess = values.openaccess === "true";
     dispatch(
-      actPostArticleAsync({
-        ...values,
-        doc: pdfFront.pdfUrl ? pdfFront.pdfUrl : "",
-        content,
-        authorlist,
-      })
+      checkUpdate
+        ? actPutArticleAsync({
+            ...values,
+            doc: pdfFront.pdfUrl ? pdfFront.pdfUrl : "",
+            content,
+            authorlist,
+          })
+        : actPostArticleAsync({
+            ...values,
+            doc: pdfFront.pdfUrl ? pdfFront.pdfUrl : "",
+            content,
+            authorlist,
+          })
     ).then((res) => {
       if (res.ok) {
         setContent("");
         setEditorState("");
         setPdfFront(null);
-        NotificationManager.success("Cập nhật thành công");
+        setCheckUpdate(false);
+        dispatch(actFetchUpdatePosts(null));
+        NotificationManager.success("thành công");
       } else {
-        NotificationManager.error("Cập nhật thất bại");
+        NotificationManager.error("thất bại");
       }
     });
   }
@@ -99,6 +143,7 @@ function AddPost() {
       });
     };
   }
+
   useEffect(
     () => {
       const uploadPdf = async () => {
@@ -175,12 +220,12 @@ function AddPost() {
                     </select>
                   </div>
                   <div className="col-md-6" style={{ color: "lightcoral" }}>
-                    <label>Tóm tắc</label>
+                    <label>Tóm tắt</label>
                     {errors.summary ? ` * ${errors.summary}` : ""}
                     <input
                       type="text"
                       name="summary"
-                      placeholder="tóm tắc ..."
+                      placeholder="tóm tắt ..."
                       onChange={handleChange}
                       value={values.summary || ""}
                       required
@@ -257,6 +302,7 @@ function AddPost() {
                             style={{ color: "lightcoral" }}
                           >
                             <label>Email</label>
+
                             <input
                               type="text"
                               name="email"
@@ -276,11 +322,16 @@ function AddPost() {
                             className="col-md-6"
                             style={{ color: "lightcoral" }}
                           >
-                            <button type="button" className="button preview" onClick={onAdd}>
+                            <button
+                              type="button"
+                              className="button preview"
+                              onClick={onAdd}
+                            >
                               Thêm tác giả
                             </button>
                           </div>
-                          <div
+                          {error}
+                          {/* <div
                             className="col-md-6"
                             style={{ color: "lightcoral" }}
                           >
@@ -298,7 +349,7 @@ function AddPost() {
                               <option value={true}>có</option>
                               <option value={false}>không</option>
                             </select>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -388,7 +439,9 @@ function AddPost() {
                 /> */}
               </div>
             </div>
-            <button className="button preview">Đăng Bài Viết</button>
+            <button className="button preview" style={{ height: "50px" }}>
+              {checkUpdate ? "Chỉnh sửa bài viết" : "Đăng Bài Viết"}
+            </button>
           </form>
         </div>
       </div>

@@ -1,13 +1,17 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { OPEN_MODAL } from "../../store/modal/actions";
+import { actFetchUpdatePostsAsync } from "../../store/post/actions";
 import AssignReviewModal from "../Modal/AssignReviewModal";
 import ManuscriptModal from "../Modal/manuscriptModal";
 import ReviewModal from "../Modal/reviewModal";
+import UpdateModal from "../Modal/UpdateModal";
 
 export default function ArticleItemStats({ viewCount, id, isEditor, isAuthor }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [review, setReview] = useState(null);
   const baseURL = "http://localhost:5000/";
   useEffect(() => {
@@ -44,6 +48,15 @@ export default function ArticleItemStats({ viewCount, id, isEditor, isAuthor }) 
       payload: <ReviewModal review={review} />,
     });
   };
+  const onUpdate = () => {
+    dispatch(actFetchUpdatePostsAsync(id, history));
+  };
+  const onDelete = () => {
+    dispatch({
+      type: OPEN_MODAL,
+      payload: <UpdateModal id={id} />,
+    });
+  };
   return (
     <ul className="article-item__stats post-category">
       {viewCount && (
@@ -59,13 +72,18 @@ export default function ArticleItemStats({ viewCount, id, isEditor, isAuthor }) 
               Cấp Quyền
             </span>
           </li>
-          {viewCount !== "PENDING" && viewCount !== "REVIEWED" && (
+          {/* {viewCount !== "PENDING" && viewCount !== "REVIEWED" && (
             <li className="cat-pink">
               <span className="text" onClick={() => onModals()}>
                 phân công đánh giá
               </span>
             </li>
-          )}
+          )} */}
+          <li className="cat-pink">
+            <span className="text" onClick={() => onModals()}>
+              phân công đánh giá
+            </span>
+          </li>
           {review && (
             <li className="cat-pink">
               <span className="text" onClick={() => onModalss()}>
@@ -84,6 +102,16 @@ export default function ArticleItemStats({ viewCount, id, isEditor, isAuthor }) 
               </span>
             </li>
           )}
+          <li className="cat-pink">
+            <span className="text" onClick={() => onUpdate()}>
+              Chỉnh sửa
+            </span>
+          </li>
+          <li className="cat-pink">
+            <span className="text" onClick={() => onDelete()}>
+              Xóa bài
+            </span>
+          </li>
         </>
       )}
     </ul>

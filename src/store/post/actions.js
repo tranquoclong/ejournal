@@ -5,6 +5,12 @@ export const ACT_FETCH_LATEST_POSTS = "ACT_FETCH_LATEST_POSTS";
 export const ACT_FETCH_POPULAR_POSTS = "ACT_FETCH_POPULAR_POSTS";
 export const ACT_FETCH_POSTS = "ACT_FETCH_POSTS";
 export const ACT_FETCH_MANUS = "ACT_FETCH_MANUS";
+export const UPDATE_POST = "UPDATE_POST";
+export const ACT_UPDATE_POST = "ACT_UPDATE_POST";
+export const ACT_FETCH_PAYMENT = "ACT_FETCH_PAYMENT";
+export const ACT_FETCH_PAYMENTAU = "ACT_FETCH_PAYMENTAU";
+export const ACT_FETCH_PAYMENTUNI = "ACT_FETCH_PAYMENTUNI";
+export const ACT_FETCH_PAYMENTUNIS = "ACT_FETCH_PAYMENTUNIS";
 export const ACT_FETCH_AUTHOR_POSTS = "ACT_FETCH_AUTHOR_POSTS";
 export const ACT_FETCH_AUTHOR_MANUS = "ACT_FETCH_AUTHOR_MANUS";
 export const ACT_FETCH_POSTS_SEARCH = "ACT_FETCh_POSTS_SEARCH";
@@ -48,6 +54,12 @@ export function actFetchPosts(posts) {
     payload: posts,
   };
 }
+export function actFetchUpdatePosts(posts) {
+  return {
+    type: UPDATE_POST,
+    payload: posts,
+  };
+}
 export function actFetchAuthorPosts(authorPosts) {
   return {
     type: ACT_FETCH_AUTHOR_POSTS,
@@ -57,6 +69,30 @@ export function actFetchAuthorPosts(authorPosts) {
 export function actFetchManus(manuscript) {
   return {
     type: ACT_FETCH_MANUS,
+    payload: manuscript,
+  };
+}
+export function actFetchPayment(manuscript) {
+  return {
+    type: ACT_FETCH_PAYMENT,
+    payload: manuscript,
+  };
+}
+export function actFetchPaymentAu(manuscript) {
+  return {
+    type: ACT_FETCH_PAYMENTAU,
+    payload: manuscript,
+  };
+}
+export function actFetchPaymentUni(manuscript) {
+  return {
+    type: ACT_FETCH_PAYMENTUNI,
+    payload: manuscript,
+  };
+}
+export function actFetchPaymentUnis(manuscript) {
+  return {
+    type: ACT_FETCH_PAYMENTUNIS,
     payload: manuscript,
   };
 }
@@ -139,6 +175,15 @@ export const actFetchPostsAsync = () => {
     } catch (e) {}
   };
 };
+export const actFetchUpdatePostsAsync = (id, history) => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getUpdatePosts(id);
+      dispatch(actFetchUpdatePosts(response.data.article[0], history));
+      history.push("/dashboard/addPost");
+    } catch (e) {}
+  };
+};
 export const actFetchAuthorPostsAsync = () => {
   return async (dispatch) => {
     try {
@@ -152,6 +197,38 @@ export const actFetchManusAsync = () => {
     try {
       const response = await PostService.getListManus();
       dispatch(actFetchManus(response.data.list));
+    } catch (e) {}
+  };
+};
+export const actFetchPaymentsAsync = () => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getPayment();
+      dispatch(actFetchPayment(response.data.list));
+    } catch (e) {}
+  };
+};
+export const actFetchPaymentAuAsync = () => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getPaymentAu();
+      dispatch(actFetchPaymentAu(response.data.list));
+    } catch (e) {}
+  };
+};
+export const actFetchPaymentUniAsync = () => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getPaymentUni();
+      dispatch(actFetchPaymentUni(response.data.list));
+    } catch (e) {}
+  };
+};
+export const actFetchPaymentUnisAsync = () => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getPaymentUnis();
+      dispatch(actFetchPaymentUnis(response.data.list));
     } catch (e) {}
   };
 };
@@ -256,7 +333,20 @@ export function actUpdateStatusPostAsync(path, id, manuscript) {
     }
   };
 }
-
+export function actDeletePostAsync( id) {
+  return async (dispatch) => {
+    try {
+      await PostService.deletePost(id);
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
 export function actAssignReviewAsync(id, roleId, manuscript) {
   return async (dispatch) => {
     try {
@@ -279,6 +369,20 @@ export function actPostArticleAsync(values) {
   return async (dispatch) => {
     try {
       await PostService.postArticle(values);
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+}
+export function actPutArticleAsync(values) {
+  return async (dispatch) => {
+    try {
+      await PostService.putArticle(values);
       return {
         ok: true,
       };

@@ -28,7 +28,7 @@ export default function ArticleItemEditor({
   const title = post.title;
   const id = post.id;
   const slugLink = `/post/${post.id}`;
-  const thumbnail = `https://source.unsplash.com/random/?book,post,${post.id}`;
+  const thumbnail = `https://source.unsplash.com/random/?book,diary,notebook,${post.id}`;
   const shortDesc = post.status;
   const viewCount = post.status;
   const categoriesId = post.author;
@@ -60,9 +60,9 @@ export default function ArticleItemEditor({
         <div>
           <ArticleItemTitle title={title} slugLink="/dashboard/postListing" />
           {isShowDesc && <ArticleItemDesc shortDesc={shortDesc} />}
-          {isShowCategories && (
+          {/* {isShowCategories && (
             <ArticleItemCategories categoriesId={categoriesId} />
-          )}
+          )} */}
         </div>
       </div>
     </article>

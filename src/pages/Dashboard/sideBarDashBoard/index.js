@@ -28,11 +28,11 @@ function SidebarDashBoard({ ROUTES }) {
               </li>
             );
           })}
-          <li>
+          {/* <li>
             <Link to="#" onClick={handleLogout}>
               <LogoutOutlined /> Đăng xuất
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

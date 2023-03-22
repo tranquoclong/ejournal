@@ -7,7 +7,8 @@ import {
   PlusCircleOutlined,
   AppstoreOutlined,
   BarsOutlined,
-  ReadOutlined
+  ReadOutlined,
+  WalletOutlined,
 } from "@ant-design/icons";
 import "./dashboard.css";
 // import DashboardLayout from "./DashboardLayout";
@@ -25,17 +26,21 @@ import ListPost from "./content/listPost";
 import Review from "./content/review";
 import AuthorListingPost from "./content/listingPost/authorListingPost";
 import AuthorListPost from "./content/listPost/authorListPost";
+import Payments from "./content/payment";
+import Payment from "./content/payment/Payment";
+import PaymentUni from "./content/payment/PaymentUni";
 
 export default function Dashboard() {
   // useAuthenticated();
-  const { admin } = useIsLogin();
+  const { admin, accessType } = useIsLogin();
   const ROUTE = [
     {
-      title: "bảng điều khiển",
+      title: "Bảng điều khiển",
       icon: <SettingOutlined />,
       href: "/dashboard",
       exact: true,
       role: ["ADMIN"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: ContentDashboard,
     },
     {
@@ -51,6 +56,7 @@ export default function Dashboard() {
         "AUTHOR",
         "MEMBER",
       ],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: Profile,
     },
     {
@@ -59,6 +65,7 @@ export default function Dashboard() {
       href: "/dashboard/addPost",
       exact: false,
       role: ["AUTHOR", "MEMBER"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: AddPost,
     },
     {
@@ -67,6 +74,7 @@ export default function Dashboard() {
       href: "/dashboard/postListing",
       exact: false,
       role: ["EDITOR"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: ListingPost,
     },
     {
@@ -75,6 +83,7 @@ export default function Dashboard() {
       href: "/dashboard/postList",
       exact: false,
       role: ["EDITOR_IN_CHIEF", "EDITOR", "REVIEWER", "MEMBER"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: ListPost,
     },
     {
@@ -83,6 +92,7 @@ export default function Dashboard() {
       href: "/dashboard/postAuthorListing",
       exact: false,
       role: ["AUTHOR"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: AuthorListingPost,
     },
     {
@@ -91,6 +101,7 @@ export default function Dashboard() {
       href: "/dashboard/postAuthorList",
       exact: false,
       role: ["AUTHOR"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: AuthorListPost,
     },
     {
@@ -99,26 +110,57 @@ export default function Dashboard() {
       href: "/dashboard/review",
       exact: false,
       role: ["REVIEWER"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: Review,
     },
     {
-      title: "Trường Học",
+      title: "Trường Đại Học",
       icon: <ReadOutlined />,
       href: "/dashboard/university",
       exact: false,
       role: ["ADMIN"],
+      accessType: ["PERSONAL", "STUDENT", "UNIVERSITY"],
       Component: University,
+    },
+    {
+      title: "Lịch Sử Thanh Toán",
+      icon: <WalletOutlined />,
+      href: "/dashboard/payment",
+      exact: false,
+      role: ["ADMIN"],
+      accessType: ["PERSONAL"],
+      Component: Payments,
+    },
+    {
+      title: "Lịch Sử Thanh Toán",
+      icon: <WalletOutlined />,
+      href: "/dashboard/payment",
+      exact: false,
+      role: ["EDITOR_IN_CHIEF", "EDITOR", "REVIEWER", "AUTHOR", "MEMBER"],
+      accessType: ["PERSONAL", "STUDENT"],
+      Component: Payment,
+    },
+    {
+      title: "Lịch Sử Thanh Toán",
+      icon: <WalletOutlined />,
+      href: "/dashboard/payment",
+      exact: false,
+      role: ["EDITOR_IN_CHIEF", "EDITOR", "REVIEWER", "AUTHOR", "MEMBER"],
+      accessType: ["UNIVERSITY"],
+      Component: PaymentUni,
     },
   ];
   const ROUTES = ROUTE.filter((item) => item.role.includes(admin));
+  const ROUTESS = ROUTES.filter((item) => item.accessType.includes(accessType));
+  
   return (
     <div className="dashboard">
       <Link to="#" className="dashboard-responsive-nav-trigger">
         <i className="fa fa-reorder" /> Điều hướng bảng điều khiển
       </Link>
       <NavDashboard />
-      <SidebarDashBoard ROUTES={ROUTES} />
-      <DashboardLayout ROUTES={ROUTES} />
+      <SidebarDashBoard ROUTES={ROUTESS} />
+      <DashboardLayout ROUTES={ROUTESS} />
       <NotificationContainer />
     </div>
   );

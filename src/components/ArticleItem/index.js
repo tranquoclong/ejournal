@@ -29,11 +29,11 @@ export default function ArticleItem({
   const title = post.title;
   const id = post.id;
   const slugLink = `/post/${post.id}`;
-  const thumbnail = `https://source.unsplash.com/random/?book,post,${post.id}`;
+  const thumbnail = `https://source.unsplash.com/random/?book,diary,notebook,${post.id}`;
 
   const authorId = post.id;
   const authorName = post.id;
-  const authorAvatar = `https://source.unsplash.com/random/?book,post,${post.id}`;
+  const authorAvatar = `https://source.unsplash.com/random/?book,diary,notebook,${post.id}`;
   const authorLink = `/user/${post.id}`;
 
   const created = "1/2/2023";

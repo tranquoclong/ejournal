@@ -35,8 +35,8 @@ function ProfileNav() {
             />
           </div>
           <div className="dash-content">
-            <h4>{currentUser.username}</h4>
-            <span>Quản lý bài</span>
+            <h4>{currentUser.fullname}</h4>
+            <span>{currentUser.email}</span>
           </div>
         </div>
       </div>

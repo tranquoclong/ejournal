@@ -63,7 +63,7 @@ function PaymentUni() {
         </div>
         <PayPalButton
           shippingPreference="NO_SHIPPING"
-          amount="1500"
+          amount="65"
           options={{
             clientId,
           }}

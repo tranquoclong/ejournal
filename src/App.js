@@ -9,23 +9,23 @@ import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 import { actFetchCategoriesAsync } from "./store/category/actions";
-import { actFetchMainMenusAsync } from "./store/menus/actions";
+//import { actFetchMainMenusAsync } from "./store/menus/actions";
 import { actGetMeAsync } from "./store/user/actions";
 import { actSetToken } from "./store/auth/actions";
 import { useIsLogin } from "./hooks/useIsLogin";
 
 function App() {
   const dispatch = useDispatch();
-  const lang = useSelector((state) => state.App.lang);
+ // const lang = useSelector((state) => state.App.lang);
   const routeMatch = useRouteMatch("/dashboard");
 
-  useEffect(() => {
-    dispatch(actFetchMainMenusAsync());
-    // eslint-disable-next-line
-  }, [lang]);
+  // useEffect(() => {
+  //   dispatch(actFetchMainMenusAsync());
+  //   // eslint-disable-next-line
+  // }, [lang]);
 
   useEffect(() => {
     dispatch(actFetchCategoriesAsync());

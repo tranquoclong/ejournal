@@ -24,7 +24,7 @@ export default function ArticleItemAuthor({
 
   const title = post.title;
   const slugLink = `/post/${post.id}`;
-  const thumbnail = `https://source.unsplash.com/random/?book,post,${post.id}`;
+  const thumbnail = `https://source.unsplash.com/random/?book,diary,notebook,${post.id}`;
     if (!post) {
       return null;
     }
@@ -47,7 +47,7 @@ export default function ArticleItemAuthor({
           alignItems: "end",
         }}
       >
-        <ArticleItemStats id={post.id} isAuthor={true} />
+        <ArticleItemStats id={post.id} post={post} isAuthor={true} />
         <ArticleItemTitle title={title} slugLink={slugLink} />
       </div>
     </article>

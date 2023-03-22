@@ -11,6 +11,7 @@ function Payments() {
   const [page, setPage] = useState(0);
   const payment = useSelector((state) => state.Post.payment);
   const paymentUnis = useSelector((state) => state.Post.paymentUnis);
+  console.log("🚀 ~ file: index.js:14 ~ Payments ~ paymentUnis:", paymentUnis)
   useEffect(
     () => {
       dispatch(actFetchPaymentsAsync());

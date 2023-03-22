@@ -184,6 +184,20 @@ export const actFetchUpdatePostsAsync = (id, history) => {
     } catch (e) {}
   };
 };
+export const actFetchPayAuAsync = (id) => {
+  return async (dispatch) => {
+    try {
+       await PostService.payAu(id);
+       return {
+         ok: true,
+       };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
+  };
+};
 export const actFetchAuthorPostsAsync = () => {
   return async (dispatch) => {
     try {
@@ -220,7 +234,7 @@ export const actFetchPaymentUniAsync = () => {
   return async (dispatch) => {
     try {
       const response = await PostService.getPaymentUni();
-      dispatch(actFetchPaymentUni(response.data.list));
+      dispatch(actFetchPaymentUni(response.data));
     } catch (e) {}
   };
 };
@@ -228,7 +242,7 @@ export const actFetchPaymentUnisAsync = () => {
   return async (dispatch) => {
     try {
       const response = await PostService.getPaymentUnis();
-      dispatch(actFetchPaymentUnis(response.data));
+      dispatch(actFetchPaymentUnis(response.data.list));
     } catch (e) {}
   };
 };

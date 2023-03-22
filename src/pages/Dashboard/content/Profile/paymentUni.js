@@ -50,8 +50,8 @@ function PaymentUni() {
               moment(paymentUnis.expirationdate).format("DD-MM-YYYY")}
           </label>
           <br />
-          <label className="margin-top-0">Chọn Trường Học </label>
-          <select
+          <label className="margin-top-0">Email Trường : {isLogin.email}</label>
+          {/* <select
             className="chosen-select-no-single"
             style={{
               background: "rgb(53, 54, 58)",
@@ -69,7 +69,7 @@ function PaymentUni() {
                     {university.name}
                   </option>
                 ))}
-          </select>
+          </select> */}
         </div>
         {paymentUnis && paymentUnis.isexpired && (
           <>

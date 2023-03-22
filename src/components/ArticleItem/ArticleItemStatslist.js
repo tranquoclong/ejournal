@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { OPEN_MODAL } from "../../store/modal/actions";
-import { actFetchUpdatePostsAsync } from "../../store/post/actions";
+import {  actFetchPaymentAuAsync, actFetchUpdatePostsAsync } from "../../store/post/actions";
 import AssignReviewModal from "../Modal/AssignReviewModal";
 import ManuscriptModal from "../Modal/manuscriptModal";
 import ReviewModal from "../Modal/reviewModal";
 import UpdateModal from "../Modal/UpdateModal";
 
+import PayAuModal from "../Modal/PayAuModal";
 export default function ArticleItemStatslist({
   user,
   isEditor,
@@ -20,6 +21,8 @@ export default function ArticleItemStatslist({
   const history = useHistory();
   const [review, setReview] = useState(null);
   const baseURL = "http://localhost:5000/";
+  const paymentAu = useSelector((state) => state.Post.paymentAu);
+  
   useEffect(() => {
     const getAccountInfo = async () => {
       const response = await axios
@@ -33,6 +36,7 @@ export default function ArticleItemStatslist({
         .post("review/view/all/", { articleid: user.id });
       setReview(response.data.list[0]?.content);
     };
+    dispatch(actFetchPaymentAuAsync());
     getAccountInfo();
     // eslint-disable-next-line
   }, []);
@@ -57,12 +61,20 @@ export default function ArticleItemStatslist({
   const onUpdate = () => {
     dispatch(actFetchUpdatePostsAsync(user.id, history));
   };
+
   const onDelete = () => {
     dispatch({
       type: OPEN_MODAL,
       payload: <UpdateModal id={user.id} />,
     });
   };
+    const onDPayAu = () => {
+      dispatch({
+        type: OPEN_MODAL,
+        payload: <PayAuModal id={user.id} />,
+      });
+    };
+
   return (
     <>
       <li>
@@ -70,7 +82,7 @@ export default function ArticleItemStatslist({
           <div className="user-list-content">
             <h4>{user.title}</h4>
             {isEditor ? (
-              <span>{user.status ? user.status:"ACCEPT"}</span>
+              <span>{user.status ? user.status : "ACCEPT"}</span>
             ) : (
               <span>Ngành học : {user.majorname}</span>
             )}
@@ -114,6 +126,23 @@ export default function ArticleItemStatslist({
                     <button className="button" onClick={() => onDelete()}>
                       Xóa bài
                     </button>
+                    {user.openaccess && (
+                      <>
+                        {paymentAu && (
+                          <>
+                            {!paymentAu.filter((p) => p.id === user.id).length >
+                              0 && (
+                              <button
+                                className="button"
+                                onClick={() => onDPayAu()}
+                              >
+                                Thanh toán
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
                   </>
                 )}
               </>

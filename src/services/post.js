@@ -8,6 +8,12 @@ export const PostService = {
   getUpdatePosts(id) {
     return api.call().get(`/article/manuscript/info?id=${id}`);
   },
+  payAu(id) {
+    return api.callWithAuth().post("/payment/submitpersonal/", {
+      articleid: id,
+      amount: "150000",
+    });
+  },
   getListAuthorPosts() {
     return api.call().get("/author/article/");
   },
@@ -24,7 +30,7 @@ export const PostService = {
     return api.call().get("/universitypayment/corresponding/");
   },
   getPaymentUnis() {
-    return api.call().get("/payment/unicorresponding/");
+    return api.call().get("/payment/universitypayment/");
   },
   getPayment() {
     return api.call().get("/payment/personalpayment/");

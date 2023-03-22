@@ -73,7 +73,7 @@ function PaymentUni() {
         </div>
         {paymentUnis && !paymentUnis.isexpired && (
           <>
-            {/* <label className="margin-top-0">Thanh Toán</label> */}
+            <label className="margin-top-0">Thanh Toán</label>
             <PayPalButton
               disabled={true}
               shippingPreference="NO_SHIPPING"
@@ -89,7 +89,7 @@ function PaymentUni() {
         )}
         {paymentUnis && paymentUnis.isexpired && (
           <>
-            {/* <label className="margin-top-0">Gia Hạn</label> */}
+            <label className="margin-top-0">Gia Hạn</label>
             <PayPalButton
               disabled={true}
               shippingPreference="NO_SHIPPING"

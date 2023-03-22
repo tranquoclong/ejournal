@@ -145,7 +145,7 @@ export default function LoginPage() {
                         </button>
                       </div>
                     </div>
-                    <div className="col-xs-12">
+                    {/* <div className="col-xs-12">
                       <div className="checkbox-outer pull-left">
                         <input
                           type="checkbox"
@@ -159,7 +159,7 @@ export default function LoginPage() {
                           Quên mật khẩu?
                         </a>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </form>
               </div>
@@ -229,7 +229,7 @@ export default function LoginPage() {
                         onChange={handleChange("passwordRe")}
                       />
                     </div>
-                    <div className="form-group col-xs-6 col-left-padding">
+                    {/* <div className="form-group col-xs-6 col-left-padding">
                       <label>Xác nhận mật khẩu :</label>
                       <input
                         type="password"
@@ -239,8 +239,8 @@ export default function LoginPage() {
                         value={formData.passwordReg}
                         onChange={handleChange("passwordReg")}
                       />
-                    </div>
-                    <div className="col-xs-12">
+                    </div> */}
+                    {/* <div className="col-xs-12">
                       <div className="checkbox-outer">
                         <input
                           type="checkbox"
@@ -250,7 +250,7 @@ export default function LoginPage() {
                         Tôi đồng ý với các{" "}
                         <Link to="/">Điều khoản và Điều kiện.</Link>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-xs-12">
                       <div className="comment-btn mar-top-30">
                         <button className="btn-blog" disabled={loading}>

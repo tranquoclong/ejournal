@@ -89,11 +89,11 @@ const PayAuModal = ({ id }) => {
 
   return (
     <div>
-      <Message>Cập nhật quyền truy cập</Message>
+      <Message>Thanh Toán</Message>
       <div style={{padding:"20px"}}>
         <PayPalButton
           shippingPreference="NO_SHIPPING"
-          amount="1500"
+          amount="65"
           options={{
             clientId,
           }}

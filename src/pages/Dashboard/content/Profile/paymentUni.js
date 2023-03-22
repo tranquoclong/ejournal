@@ -71,9 +71,9 @@ function PaymentUni() {
                 ))}
           </select> */}
         </div>
-        {paymentUnis && paymentUnis.isexpired && (
+        {paymentUnis && !paymentUnis.isexpired && (
           <>
-            <label className="margin-top-0">Gia Hạn</label>
+            {/* <label className="margin-top-0">Thanh Toán</label> */}
             <PayPalButton
               disabled={true}
               shippingPreference="NO_SHIPPING"
@@ -84,8 +84,22 @@ function PaymentUni() {
               onSuccess={(details, data) => {
                 onSuccess(details, data);
               }}
-              disableCard="no"
-              disableFunding="no"
+            />
+          </>
+        )}
+        {paymentUnis && paymentUnis.isexpired && (
+          <>
+            {/* <label className="margin-top-0">Gia Hạn</label> */}
+            <PayPalButton
+              disabled={true}
+              shippingPreference="NO_SHIPPING"
+              amount="65"
+              options={{
+                clientId,
+              }}
+              onSuccess={(details, data) => {
+                onSuccess(details, data);
+              }}
             />
           </>
         )}

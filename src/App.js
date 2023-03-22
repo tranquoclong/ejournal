@@ -95,7 +95,7 @@ console.log(isLogin);
       {!routeMatch && (
         <>
           <div className="spacing"></div>
-          <Footer />
+          {/* <Footer /> */}
         </>
       )}
     </main>

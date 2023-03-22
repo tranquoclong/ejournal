@@ -114,7 +114,7 @@ export default function Dashboard() {
       Component: Review,
     },
     {
-      title: "Trường Đại Học",
+      title: "Trường đại học",
       icon: <ReadOutlined />,
       href: "/dashboard/university",
       exact: false,
@@ -123,7 +123,7 @@ export default function Dashboard() {
       Component: University,
     },
     {
-      title: "Lịch Sử Thanh Toán",
+      title: "Lịch Sử thanh toán",
       icon: <WalletOutlined />,
       href: "/dashboard/payment",
       exact: false,
@@ -132,7 +132,7 @@ export default function Dashboard() {
       Component: Payments,
     },
     {
-      title: "Lịch Sử Thanh Toán",
+      title: "Lịch Sử thanh toán",
       icon: <WalletOutlined />,
       href: "/dashboard/payment",
       exact: false,
@@ -141,7 +141,7 @@ export default function Dashboard() {
       Component: Payment,
     },
     {
-      title: "Lịch Sử Thanh Toán",
+      title: "Lịch Sử thanh toán",
       icon: <WalletOutlined />,
       href: "/dashboard/payment",
       exact: false,

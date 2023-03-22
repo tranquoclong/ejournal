@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { OPEN_MODAL } from "../../store/modal/actions";
 import {  actFetchPaymentAuAsync, actFetchUpdatePostsAsync } from "../../store/post/actions";
 import AssignReviewModal from "../Modal/AssignReviewModal";
@@ -80,7 +80,7 @@ export default function ArticleItemStatslist({
       <li>
         <div className="user-list-item">
           <div className="user-list-content">
-            <h4>{user.title}</h4>
+            <Link to={`/post/${user.id}`}>{user.title}</Link>
             {isEditor ? (
               <span>{user.status ? user.status : "ACCEPT"}</span>
             ) : (
@@ -111,12 +111,10 @@ export default function ArticleItemStatslist({
             )}
             {isAuthor && (
               <>
-                {review ? (
+                {review && (
                   <button className="button" onClick={() => onModalss()}>
                     Xem Đánh Giá
                   </button>
-                ) : (
-                  <button className="button">Chưa Đánh Giá</button>
                 )}
                 {isAuthorUse && (
                   <>

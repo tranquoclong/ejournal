@@ -22,7 +22,7 @@ function Payment() {
       <div className="row">
         <div className="col-lg-12 col-md-12 col-xs-12 traffic">
           <div className="dashboard-list-box margin-top-20 user-list">
-            <h4 className="gray">Danh sách bài báo</h4>
+            <h4 className="gray">Lịch sử thanh toán</h4>
             <ul>
               {paymentAu && (
                 <>

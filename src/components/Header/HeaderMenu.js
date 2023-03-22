@@ -44,7 +44,7 @@ export default function HeaderMenu() {
           {isLogin ? (
             <>
               <Link to="/dashboard/profile">
-                <UserOutlined /> {currentUser.username}
+                <UserOutlined /> {currentUser.fullname}
               </Link>
               <ul>
                 <li style={{ marginTop: "15px" }}>

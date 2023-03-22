@@ -37,7 +37,7 @@ function PostDetailContent() {
           },
           withCredentials: true,
         })
-        .post("article/public/", { id: post.id });
+        .post("/article/public/", { id: post.id });
       setFullText(response.data[0]);
     };
     post && getAccountInfo();

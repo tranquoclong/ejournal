@@ -215,8 +215,8 @@ function AddPost() {
                       required
                     >
                       <option>chọn quyền truy cập</option>
-                      <option value={false}>Hạn Chế</option>
-                      <option value={true}>Công Khai</option>
+                      <option value={"false"}>Hạn Chế</option>
+                      <option value={"true"}>Công Khai</option>
                     </select>
                   </div>
                   <div className="col-md-6" style={{ color: "lightcoral" }}>

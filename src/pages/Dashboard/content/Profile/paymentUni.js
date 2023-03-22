@@ -2,16 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {  actGetAllUniversity, actPaymentUniversityAsync } from "../../../../store/user/actions";
 import { NotificationManager } from "react-notifications";
-import { PayPalButton } from "react-paypal-button-v2/lib";
+import { PayPalButton } from "react-paypal-button-v2";
 import { useIsLogin } from "../../../../hooks/useIsLogin";
+import { actFetchPaymentUnisAsync } from "../../../../store/post/actions";
+import moment from "moment";
 function PaymentUni() {
   const dispatch = useDispatch();
   const { isLogin } = useIsLogin();
   const [universityid, setUniversityid] = useState("12");
   const allUniversity = useSelector((state) => state.User.allUniversity);
-   useEffect(
+  const paymentUnis = useSelector((state) => state.Post.paymentUnis); 
+  useEffect(
      () => {
        dispatch(actGetAllUniversity());
+        dispatch(actFetchPaymentUnisAsync());
      },
      // eslint-disable-next-line
      []
@@ -40,6 +44,12 @@ function PaymentUni() {
       <h4 className="gray">Thanh Toán Trường Học</h4>
       <form className="dashboard-list-box-static">
         <div className="my-profile">
+          <label className="margin-top-0">
+            Ngày hết hạn :
+            {paymentUnis &&
+              moment(paymentUnis.expirationdate).format("DD-MM-YYYY")}
+          </label>
+          <br />
           <label className="margin-top-0">Chọn Trường Học </label>
           <select
             className="chosen-select-no-single"
@@ -61,16 +71,24 @@ function PaymentUni() {
                 ))}
           </select>
         </div>
-        <PayPalButton
-          shippingPreference="NO_SHIPPING"
-          amount="65"
-          options={{
-            clientId,
-          }}
-          onSuccess={(details, data) => {
-            onSuccess(details, data);
-          }}
-        />
+        {paymentUnis && paymentUnis.isexpired && (
+          <>
+            <label className="margin-top-0">Gia Hạn</label>
+            <PayPalButton
+              disabled={true}
+              shippingPreference="NO_SHIPPING"
+              amount="65"
+              options={{
+                clientId,
+              }}
+              onSuccess={(details, data) => {
+                onSuccess(details, data);
+              }}
+              disableCard="no"
+              disableFunding="no"
+            />
+          </>
+        )}
       </form>
     </div>
   );

@@ -4,18 +4,18 @@ import {  actGetAllUniversity, actPaymentUniversityAsync } from "../../../../sto
 import { NotificationManager } from "react-notifications";
 import { PayPalButton } from "react-paypal-button-v2";
 import { useIsLogin } from "../../../../hooks/useIsLogin";
-import { actFetchPaymentUnisAsync } from "../../../../store/post/actions";
+import { actFetchPaymentUniAsync } from "../../../../store/post/actions";
 import moment from "moment";
 function PaymentUni() {
   const dispatch = useDispatch();
   const { isLogin } = useIsLogin();
   const [universityid, setUniversityid] = useState("12");
   const allUniversity = useSelector((state) => state.User.allUniversity);
-  const paymentUnis = useSelector((state) => state.Post.paymentUnis); 
+  const paymentUni = useSelector((state) => state.Post.paymentUni); 
   useEffect(
      () => {
        dispatch(actGetAllUniversity());
-        dispatch(actFetchPaymentUnisAsync());
+        dispatch(actFetchPaymentUniAsync());
      },
      // eslint-disable-next-line
      []
@@ -46,8 +46,8 @@ function PaymentUni() {
         <div className="my-profile">
           <label className="margin-top-0">
             Ngày hết hạn :
-            {paymentUnis &&
-              moment(paymentUnis.expirationdate).format("DD-MM-YYYY")}
+            {paymentUni &&
+              moment(paymentUni.expirationdate).format("DD-MM-YYYY")}
           </label>
           <br />
           <label className="margin-top-0">Email Trường : {isLogin.email}</label>
@@ -71,7 +71,7 @@ function PaymentUni() {
                 ))}
           </select> */}
         </div>
-        {paymentUnis && !paymentUnis.isexpired && (
+        {!paymentUni && (
           <>
             <label className="margin-top-0">Thanh Toán</label>
             <PayPalButton
@@ -87,7 +87,7 @@ function PaymentUni() {
             />
           </>
         )}
-        {paymentUnis && paymentUnis.isexpired && (
+        {paymentUni && paymentUni.isexpired && (
           <>
             <label className="margin-top-0">Gia Hạn</label>
             <PayPalButton

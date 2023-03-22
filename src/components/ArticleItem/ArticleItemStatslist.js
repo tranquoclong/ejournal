@@ -128,8 +128,8 @@ export default function ArticleItemStatslist({
                       <>
                         {paymentAu && (
                           <>
-                            {!paymentAu.filter((p) => p.id === user.id).length >
-                              0 && (
+                            {!paymentAu.filter((p) => p.articleid === user.id)
+                              .length > 0 && (
                               <button
                                 className="button"
                                 onClick={() => onDPayAu()}

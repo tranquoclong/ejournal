@@ -27,7 +27,7 @@ export const PostService = {
     return api.call().get("/payment/mypayment/");
   },
   getPaymentUni() {
-    return api.call().get("/universitypayment/corresponding/");
+    return api.call().get("/payment/unicorresponding/");
   },
   getPaymentUnis() {
     return api.call().get("/payment/universitypayment/");

@@ -234,7 +234,7 @@ export const actFetchPaymentUniAsync = () => {
   return async (dispatch) => {
     try {
       const response = await PostService.getPaymentUni();
-      dispatch(actFetchPaymentUni(response.data));
+      dispatch(actFetchPaymentUni(response.data.id ? response.data : null));
     } catch (e) {}
   };
 };
